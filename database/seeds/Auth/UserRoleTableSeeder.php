@@ -26,9 +26,6 @@ class UserRoleTableSeeder extends Seeder
         //Attach executive role to executive user
         User::find(2)->attachRole(2);
 
-        //Attach user role to general user
-        User::find(3)->attachRole(3);
-
         $this->enableForeignKeys();
     }
 }

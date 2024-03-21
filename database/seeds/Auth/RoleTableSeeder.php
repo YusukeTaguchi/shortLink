@@ -41,17 +41,7 @@ class RoleTableSeeder extends Seeder
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now(),
                 'deleted_at' => null,
-            ],
-            [
-                'name' => 'User',
-                'all' => false,
-                'sort' => 3,
-                'created_by' => 1,
-                'updated_by' => null,
-                'created_at' => Carbon::now(),
-                'updated_at' => Carbon::now(),
-                'deleted_at' => null,
-            ],
+            ]
         ];
 
         DB::table('roles')->insert($roles);

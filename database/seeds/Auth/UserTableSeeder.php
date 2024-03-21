@@ -51,21 +51,7 @@ class UserTableSeeder extends Seeder
                 'updated_at' => Carbon::now(),
                 'deleted_at' => null,
                 'uuid' => Str::uuid(),
-            ],
-            [
-                'first_name' => 'User',
-                'last_name' => 'Test 002',
-                'email' => 'user2@user.com',
-                'password' => bcrypt('1234'),
-                'confirmation_code' => md5(uniqid(mt_rand(), true)),
-                'confirmed' => true,
-                'created_by' => 1,
-                'updated_by' => null,
-                'created_at' => Carbon::now(),
-                'updated_at' => Carbon::now(),
-                'deleted_at' => null,
-                'uuid' => Str::uuid(),
-            ],
+            ]
         ];
 
         DB::table('users')->insert($users);

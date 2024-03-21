@@ -28,14 +28,6 @@ class PermissionUserSeeder extends Seeder
             $user->permissions()->sync($permissions);
         }
 
-        // Attach frontend user permission
-        $user = User::find(3);
-        $permissions = $user->roles->first()->permissions->pluck('id');
-
-        if (! empty($permissions)) {
-            $user->permissions()->sync($permissions);
-        }
-
         $this->enableForeignKeys();
     }
 }

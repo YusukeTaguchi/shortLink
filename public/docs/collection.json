@@ -1,7 +1,7 @@
 {
     "variables": [],
     "info": {
-        "name": "Laravel Starter API",
+        "name": "Laravel API",
         "_postman_id": "048b12f0-463b-47d6-afea-b6a544ffd4c3",
         "description": "",
         "schema": "https:\/\/schema.getpostman.com\/json\/collection\/v2.0.0\/collection.json"

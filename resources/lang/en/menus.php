@@ -69,6 +69,17 @@ return [
                 'view' => 'View Blog',
             ],
 
+            'links' => [
+                'all' => 'All Links',
+                'active' => 'Active Links',
+                'create' => 'Create Link',
+                'deactivated' => 'Deactivated Links',
+                'deleted' => 'Deleted Links',
+                'edit' => 'Edit Link',
+                'main' => 'Links',
+                'view' => 'View Link',
+            ],
+
             'blog-categories' => [
                 'all' => 'All Blog Categories',
                 'active' => 'Active Blog Categories',

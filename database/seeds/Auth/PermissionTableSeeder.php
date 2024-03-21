@@ -295,100 +295,6 @@ class PermissionTableSeeder extends Seeder
         $viewBackend->save();
 
         /**
-         * Pages.
-         */
-        $viewBackend = new Permission();
-        $viewBackend->name = 'view-page';
-        $viewBackend->display_name = 'View Page';
-        $viewBackend->sort = 23;
-        $viewBackend->created_by = 1;
-        $viewBackend->updated_by = null;
-        $viewBackend->created_at = Carbon::now();
-        $viewBackend->updated_at = Carbon::now();
-        $viewBackend->deleted_at = null;
-        $viewBackend->save();
-
-        $viewBackend = new Permission();
-        $viewBackend->name = 'create-page';
-        $viewBackend->display_name = 'Create Page';
-        $viewBackend->sort = 24;
-        $viewBackend->created_by = 1;
-        $viewBackend->updated_by = null;
-        $viewBackend->created_at = Carbon::now();
-        $viewBackend->updated_at = Carbon::now();
-        $viewBackend->deleted_at = null;
-        $viewBackend->save();
-
-        $viewBackend = new Permission();
-        $viewBackend->name = 'edit-page';
-        $viewBackend->display_name = 'Edit Page';
-        $viewBackend->sort = 25;
-        $viewBackend->created_by = 1;
-        $viewBackend->updated_by = null;
-        $viewBackend->created_at = Carbon::now();
-        $viewBackend->updated_at = Carbon::now();
-        $viewBackend->deleted_at = null;
-        $viewBackend->save();
-
-        $viewBackend = new Permission();
-        $viewBackend->name = 'delete-page';
-        $viewBackend->display_name = 'Delete Page';
-        $viewBackend->sort = 26;
-        $viewBackend->created_by = 1;
-        $viewBackend->updated_by = null;
-        $viewBackend->created_at = Carbon::now();
-        $viewBackend->updated_at = Carbon::now();
-        $viewBackend->deleted_at = null;
-        $viewBackend->save();
-
-        /**
-         * Email Templates.
-         */
-        $viewBackend = new Permission();
-        $viewBackend->name = 'view-email-template';
-        $viewBackend->display_name = 'View Email Templates';
-        $viewBackend->sort = 27;
-        $viewBackend->created_by = 1;
-        $viewBackend->updated_by = null;
-        $viewBackend->created_at = Carbon::now();
-        $viewBackend->updated_at = Carbon::now();
-        $viewBackend->deleted_at = null;
-        $viewBackend->save();
-
-        $viewBackend = new Permission();
-        $viewBackend->name = 'create-email-template';
-        $viewBackend->display_name = 'Create Email Templates';
-        $viewBackend->sort = 28;
-        $viewBackend->created_by = 1;
-        $viewBackend->updated_by = null;
-        $viewBackend->created_at = Carbon::now();
-        $viewBackend->updated_at = Carbon::now();
-        $viewBackend->deleted_at = null;
-        $viewBackend->save();
-
-        $viewBackend = new Permission();
-        $viewBackend->name = 'edit-email-template';
-        $viewBackend->display_name = 'Edit Email Templates';
-        $viewBackend->sort = 29;
-        $viewBackend->created_by = 1;
-        $viewBackend->updated_by = null;
-        $viewBackend->created_at = Carbon::now();
-        $viewBackend->updated_at = Carbon::now();
-        $viewBackend->deleted_at = null;
-        $viewBackend->save();
-
-        $viewBackend = new Permission();
-        $viewBackend->name = 'delete-email-template';
-        $viewBackend->display_name = 'Delete Email Templates';
-        $viewBackend->sort = 30;
-        $viewBackend->created_by = 1;
-        $viewBackend->updated_by = null;
-        $viewBackend->created_at = Carbon::now();
-        $viewBackend->updated_at = Carbon::now();
-        $viewBackend->deleted_at = null;
-        $viewBackend->save();
-
-        /**
          * Settings.
          */
         $viewBackend = new Permission();
@@ -402,106 +308,13 @@ class PermissionTableSeeder extends Seeder
         $viewBackend->deleted_at = null;
         $viewBackend->save();
 
-        /**
-         * Blog Categories Management.
-         */
-        $viewBackend = new Permission();
-        $viewBackend->name = 'view-blog-category';
-        $viewBackend->display_name = 'View Blog Categories Management';
-        $viewBackend->sort = 32;
-        $viewBackend->created_by = 1;
-        $viewBackend->updated_by = null;
-        $viewBackend->created_at = Carbon::now();
-        $viewBackend->updated_at = Carbon::now();
-        $viewBackend->deleted_at = null;
-        $viewBackend->save();
-
-        $viewBackend = new Permission();
-        $viewBackend->name = 'create-blog-category';
-        $viewBackend->display_name = 'Create Blog Category';
-        $viewBackend->sort = 33;
-        $viewBackend->created_by = 1;
-        $viewBackend->updated_by = null;
-        $viewBackend->created_at = Carbon::now();
-        $viewBackend->updated_at = Carbon::now();
-        $viewBackend->deleted_at = null;
-        $viewBackend->save();
-
-        $viewBackend = new Permission();
-        $viewBackend->name = 'edit-blog-category';
-        $viewBackend->display_name = 'Edit Blog Category';
-        $viewBackend->sort = 34;
-        $viewBackend->created_by = 1;
-        $viewBackend->updated_by = null;
-        $viewBackend->created_at = Carbon::now();
-        $viewBackend->updated_at = Carbon::now();
-        $viewBackend->deleted_at = null;
-        $viewBackend->save();
-
-        $viewBackend = new Permission();
-        $viewBackend->name = 'delete-blog-category';
-        $viewBackend->display_name = 'Delete Blog Category';
-        $viewBackend->sort = 35;
-        $viewBackend->created_by = 1;
-        $viewBackend->updated_by = null;
-        $viewBackend->created_at = Carbon::now();
-        $viewBackend->updated_at = Carbon::now();
-        $viewBackend->deleted_at = null;
-        $viewBackend->save();
 
         /**
-         * Blog Tags Management.
+         * Links Management.
          */
         $viewBackend = new Permission();
-        $viewBackend->name = 'view-blog-tag';
-        $viewBackend->display_name = 'View Blog Tags Management';
-        $viewBackend->sort = 36;
-        $viewBackend->created_by = 1;
-        $viewBackend->updated_by = null;
-        $viewBackend->created_at = Carbon::now();
-        $viewBackend->updated_at = Carbon::now();
-        $viewBackend->deleted_at = null;
-        $viewBackend->save();
-
-        $viewBackend = new Permission();
-        $viewBackend->name = 'create-blog-tag';
-        $viewBackend->display_name = 'Create Blog Tag';
-        $viewBackend->sort = 37;
-        $viewBackend->created_by = 1;
-        $viewBackend->updated_by = null;
-        $viewBackend->created_at = Carbon::now();
-        $viewBackend->updated_at = Carbon::now();
-        $viewBackend->deleted_at = null;
-        $viewBackend->save();
-
-        $viewBackend = new Permission();
-        $viewBackend->name = 'edit-blog-tag';
-        $viewBackend->display_name = 'Edit Blog Tag';
-        $viewBackend->sort = 38;
-        $viewBackend->created_by = 1;
-        $viewBackend->updated_by = null;
-        $viewBackend->created_at = Carbon::now();
-        $viewBackend->updated_at = Carbon::now();
-        $viewBackend->deleted_at = null;
-        $viewBackend->save();
-
-        $viewBackend = new Permission();
-        $viewBackend->name = 'delete-blog-tag';
-        $viewBackend->display_name = 'Delete Blog Tag';
-        $viewBackend->sort = 39;
-        $viewBackend->created_by = 1;
-        $viewBackend->updated_by = null;
-        $viewBackend->created_at = Carbon::now();
-        $viewBackend->updated_at = Carbon::now();
-        $viewBackend->deleted_at = null;
-        $viewBackend->save();
-
-        /**
-         * Blogs Management.
-         */
-        $viewBackend = new Permission();
-        $viewBackend->name = 'view-blog';
-        $viewBackend->display_name = 'View Blogs Management';
+        $viewBackend->name = 'view-link';
+        $viewBackend->display_name = 'View Links Management';
         $viewBackend->sort = 40;
         $viewBackend->created_by = 1;
         $viewBackend->updated_by = null;
@@ -511,8 +324,8 @@ class PermissionTableSeeder extends Seeder
         $viewBackend->save();
 
         $viewBackend = new Permission();
-        $viewBackend->name = 'create-blog';
-        $viewBackend->display_name = 'Create Blog';
+        $viewBackend->name = 'create-link';
+        $viewBackend->display_name = 'Create Link';
         $viewBackend->sort = 41;
         $viewBackend->created_by = 1;
         $viewBackend->updated_by = null;
@@ -522,8 +335,8 @@ class PermissionTableSeeder extends Seeder
         $viewBackend->save();
 
         $viewBackend = new Permission();
-        $viewBackend->name = 'edit-blog';
-        $viewBackend->display_name = 'Edit Blog';
+        $viewBackend->name = 'edit-link';
+        $viewBackend->display_name = 'Edit Link';
         $viewBackend->sort = 42;
         $viewBackend->created_by = 1;
         $viewBackend->updated_by = null;
@@ -533,8 +346,8 @@ class PermissionTableSeeder extends Seeder
         $viewBackend->save();
 
         $viewBackend = new Permission();
-        $viewBackend->name = 'delete-blog';
-        $viewBackend->display_name = 'Delete Blog';
+        $viewBackend->name = 'delete-link';
+        $viewBackend->display_name = 'Delete Link';
         $viewBackend->sort = 43;
         $viewBackend->created_by = 1;
         $viewBackend->updated_by = null;
@@ -544,11 +357,11 @@ class PermissionTableSeeder extends Seeder
         $viewBackend->save();
 
         /**
-         * FAQs.
+         * Settings.
          */
         $viewBackend = new Permission();
-        $viewBackend->name = 'view-faq';
-        $viewBackend->display_name = 'View FAQ Management';
+        $viewBackend->name = 'view-setting';
+        $viewBackend->display_name = 'View Setting Management';
         $viewBackend->sort = 44;
         $viewBackend->created_by = 1;
         $viewBackend->updated_by = null;
@@ -558,8 +371,8 @@ class PermissionTableSeeder extends Seeder
         $viewBackend->save();
 
         $viewBackend = new Permission();
-        $viewBackend->name = 'create-faq';
-        $viewBackend->display_name = 'Create FAQ';
+        $viewBackend->name = 'create-setting';
+        $viewBackend->display_name = 'Create Setting';
         $viewBackend->sort = 45;
         $viewBackend->created_by = 1;
         $viewBackend->updated_by = null;
@@ -569,8 +382,8 @@ class PermissionTableSeeder extends Seeder
         $viewBackend->save();
 
         $viewBackend = new Permission();
-        $viewBackend->name = 'edit-faq';
-        $viewBackend->display_name = 'Edit FAQ';
+        $viewBackend->name = 'edit-setting';
+        $viewBackend->display_name = 'Edit Setting';
         $viewBackend->sort = 46;
         $viewBackend->created_by = 1;
         $viewBackend->updated_by = null;
@@ -580,8 +393,56 @@ class PermissionTableSeeder extends Seeder
         $viewBackend->save();
 
         $viewBackend = new Permission();
-        $viewBackend->name = 'delete-faq';
-        $viewBackend->display_name = 'Delete FAQ';
+        $viewBackend->name = 'delete-setting';
+        $viewBackend->display_name = 'Delete Setting';
+        $viewBackend->sort = 47;
+        $viewBackend->created_by = 1;
+        $viewBackend->updated_by = null;
+        $viewBackend->created_at = Carbon::now();
+        $viewBackend->updated_at = Carbon::now();
+        $viewBackend->deleted_at = null;
+        $viewBackend->save();
+
+
+        /**
+         * Domains.
+         */
+        $viewBackend = new Permission();
+        $viewBackend->name = 'view-domain';
+        $viewBackend->display_name = 'View Setting Domain';
+        $viewBackend->sort = 44;
+        $viewBackend->created_by = 1;
+        $viewBackend->updated_by = null;
+        $viewBackend->created_at = Carbon::now();
+        $viewBackend->updated_at = Carbon::now();
+        $viewBackend->deleted_at = null;
+        $viewBackend->save();
+
+        $viewBackend = new Permission();
+        $viewBackend->name = 'create-domain';
+        $viewBackend->display_name = 'Create Domain';
+        $viewBackend->sort = 45;
+        $viewBackend->created_by = 1;
+        $viewBackend->updated_by = null;
+        $viewBackend->created_at = Carbon::now();
+        $viewBackend->updated_at = Carbon::now();
+        $viewBackend->deleted_at = null;
+        $viewBackend->save();
+
+        $viewBackend = new Permission();
+        $viewBackend->name = 'edit-domain';
+        $viewBackend->display_name = 'Edit Domain';
+        $viewBackend->sort = 46;
+        $viewBackend->created_by = 1;
+        $viewBackend->updated_by = null;
+        $viewBackend->created_at = Carbon::now();
+        $viewBackend->updated_at = Carbon::now();
+        $viewBackend->deleted_at = null;
+        $viewBackend->save();
+
+        $viewBackend = new Permission();
+        $viewBackend->name = 'delete-domain';
+        $viewBackend->display_name = 'Delete Domain';
         $viewBackend->sort = 47;
         $viewBackend->created_by = 1;
         $viewBackend->updated_by = null;

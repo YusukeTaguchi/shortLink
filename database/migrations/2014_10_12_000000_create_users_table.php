@@ -31,11 +31,11 @@ class CreateUsersTable extends Migration
             $table->timestamp('last_login_at')->nullable();
             $table->string('last_login_ip')->nullable();
             $table->boolean('to_be_logged_out')->default(false);
-
             $table->boolean('status')->default(1);
             $table->integer('created_by')->unsigned()->nullable();
             $table->integer('updated_by')->unsigned()->nullable();
-            $table->boolean('is_term_accept')->default(0)->comment(' 0 = not accepted,1 = accepted');
+            $table->boolean('is_term_accept')->default(0)->comment(' 0 = not accepted, 1 = accepted');
+            $table->boolean('is_allow_original_link')->default(1)->comment(' 0 = not allow, 1 = allow');
 
             $table->rememberToken();
             $table->timestamps();
