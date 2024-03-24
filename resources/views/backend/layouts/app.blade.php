@@ -12,6 +12,8 @@
     <title>@yield('title', app_name())</title>
     <meta name="description" content="@yield('meta_description', 'Laravel')">
     <meta name="author" content="@yield('meta_author', 'FasTrax Infotech')">
+    <link rel="shortcut icon" href="{{ asset('img/backend/brand/logo.png') }}" type="image/png">
+
     @yield('meta')
 
     {{-- See https://laravel.com/docs/5.5/blade#stacks for usage --}}

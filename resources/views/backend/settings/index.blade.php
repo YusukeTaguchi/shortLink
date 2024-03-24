@@ -23,14 +23,6 @@
             <div class="col">
                 <div class="table-responsive">
                     <table id="settings-table" class="table" data-ajax_url="{{ route("admin.settings.get") }}">
-                        <thead>
-                            <tr>
-                                <th>{{ trans('labels.backend.access.settings.table.question') }}</th>
-                                <th>{{ trans('labels.backend.access.settings.table.answer') }}</th>
-                                <th>{{ trans('labels.backend.access.settings.table.createdat') }}</th>
-                                <th>{{ trans('labels.general.actions') }}</th>
-                            </tr>
-                        </thead>
                         <tbody>
                         </tbody>
                     </table>

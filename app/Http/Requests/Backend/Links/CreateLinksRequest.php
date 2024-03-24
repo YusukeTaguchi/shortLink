@@ -29,7 +29,9 @@ class CreateLinksRequest extends FormRequest
         return [
             'title' => 'required|max:500|unique:links,title,'.$this->segment(4),
             'thumbnail_image' => 'required',
-            'notes' => 'required',
+            'keywords' => 'required',
+            'description' => 'required',
+            'original_link' => 'required',
         ];
     }
 

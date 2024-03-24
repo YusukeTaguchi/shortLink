@@ -80,6 +80,39 @@ return [
                 'view' => 'View Link',
             ],
 
+            'domains' => [
+                'all' => 'All Domains',
+                'active' => 'Active Domains',
+                'create' => 'Create Domains',
+                'deactivated' => 'Deactivated Domains',
+                'deleted' => 'Deleted Domains',
+                'edit' => 'Edit Domain',
+                'main' => 'Domains',
+                'view' => 'View Domain',
+            ],
+
+            'redirect-links' => [
+                'all' => 'All Redirect Links',
+                'active' => 'Active Redirect Links',
+                'create' => 'Create Redirect Links',
+                'deactivated' => 'Deactivated Redirect Links',
+                'deleted' => 'Deleted Redirect Links',
+                'edit' => 'Edit Redirect Link',
+                'main' => 'Redirect Links',
+                'view' => 'View Redirect Link',
+            ],
+
+            'settings' => [
+                'all' => 'All Settings',
+                'active' => 'Active Settings',
+                'create' => 'Create Settings',
+                'deactivated' => 'Deactivated Settings',
+                'deleted' => 'Deleted Settings',
+                'edit' => 'Edit Setting',
+                'main' => 'Setting',
+                'view' => 'View Setting',
+            ],
+
             'blog-categories' => [
                 'all' => 'All Blog Categories',
                 'active' => 'Active Blog Categories',

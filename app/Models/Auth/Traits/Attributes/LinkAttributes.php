@@ -4,7 +4,7 @@ namespace App\Models\Auth\Traits\Attributes;
 
 use Illuminate\Support\Facades\Hash;
 
-trait UserAttributes
+trait LinkAttributes
 {
     /**
      * @param $password

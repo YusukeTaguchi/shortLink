@@ -86,6 +86,8 @@ class LinksRepository extends BaseRepository
             ->leftjoin('users', 'users.id', '=', 'links.created_by')
             ->select([
                 'links.id',
+                'links.slug',
+                'links.thumbnail_image',
                 'links.title',
                 'links.status',
                 'links.created_by',

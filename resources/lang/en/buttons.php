@@ -45,6 +45,8 @@ return [
             'create' => 'Create',
             'delete' => 'Delete',
             'edit' => 'Edit',
+            'copy' => 'Copy',
+            'sync' => 'Sync',
             'update' => 'Update',
             'view' => 'View',
         ],

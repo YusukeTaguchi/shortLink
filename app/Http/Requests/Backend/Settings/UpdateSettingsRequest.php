@@ -24,7 +24,6 @@ class UpdateSettingsRequest extends FormRequest
     public function rules()
     {
         return [
-            'auto_redirect_type' => ['required'],
             'auto_redirect_to' => ['required']
         ];
     }
@@ -37,7 +36,6 @@ class UpdateSettingsRequest extends FormRequest
     public function messages()
     {
         return [
-            'auto_redirect_type.required' => 'Auto redirect type field is required.',
             'auto_redirect_to.required' => 'Auto redirect to field is required.',
         ];
     }

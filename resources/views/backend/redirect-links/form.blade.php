@@ -28,7 +28,7 @@
                 {{ Form::label('url', trans('validation.attributes.backend.access.redirect-links.url'), ['class' => 'col-md-2 from-control-label required']) }}
 
                 <div class="col-md-10">
-                    {{ Form::textarea('url', null, ['class' => 'form-control', 'placeholder' => trans('validation.attributes.backend.access.redirect-links.url')]) }}
+                    {{ Form::text('url', null, ['class' => 'form-control', 'placeholder' => trans('validation.attributes.backend.access.redirect-links.url')]) }}
                 </div>
                 <!--col-->
             </div>
@@ -38,12 +38,12 @@
                 {{ Form::label('status', trans('validation.attributes.backend.access.redirect-links.status'), ['class' => 'col-md-2 from-control-label required']) }}
 
                 @php
-                $status = isset($faq) ? '' : 'checked'
+                $status = isset($redirectLink) ? '' : 'checked'
                 @endphp
                 
                 <div class="col-md-10">
                     <div class="checkbox d-flex align-items-center">
-                        <label class="switch switch-label switch-pill switch-primary mr-2" for="role-1"><input class="switch-input" type="checkbox" name="status" id="role-1" value="1" {{ (isset($faq->status) && $faq->status === 1) ? "checked" : $status }}><span class="switch-slider" data-checked="on" data-unchecked="off"></span></label>
+                        <label class="switch switch-label switch-pill switch-primary mr-2" for="role-1"><input class="switch-input" type="checkbox" name="status" id="role-1" value="1" {{ (isset($redirectLink->status) && $redirectLink->status === 1) ? "checked" : $status }}><span class="switch-slider" data-checked="on" data-unchecked="off"></span></label>
                     </div>
                 </div>
                 <!--col-->

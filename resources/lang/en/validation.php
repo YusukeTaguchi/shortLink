@@ -248,6 +248,13 @@ return [
                     'meta_keywords' => 'Meta Keywords',
                     'meta_description' => 'Meta Description',
                     'status' => 'Status',
+                    'keywords' => 'Keywords',
+                    'description' => 'Description',
+                    'thumbnail_image' => 'Thumbnail Image',
+                    'notes' => 'Notes',
+                    'domains' => 'Domain',
+                    'fake' => "Mode Fake"
+
                 ],
 
                 'redirect-links' => [
@@ -263,6 +270,8 @@ return [
                     'meta_keywords' => 'Meta Keywords',
                     'meta_description' => 'Meta Description',
                     'status' => 'Status',
+                    'domain' => 'Domains',
+                    'url' => 'URL'
                 ],
 
                 'domains' => [
@@ -278,7 +287,31 @@ return [
                     'meta_keywords' => 'Meta Keywords',
                     'meta_description' => 'Meta Description',
                     'status' => 'Status',
+                    'domain' => 'Domains',
+                    'name' => 'Name',
+                    'url' => 'URL'
                 ],
+
+                
+                'settings' => [
+                    'title' => 'Title',
+                    'blog_categories' => 'Domain',
+                    'publish_date_time' => 'Publish Date & Time',
+                    'featured_image' => 'Featured Image',
+                    'content' => 'Content',
+                    'tags' => 'Tags',
+                    'meta_title' => 'Meta Title',
+                    'slug' => 'Blog Slug',
+                    'cannonical_link' => 'Cannonical Link',
+                    'meta_keywords' => 'Meta Keywords',
+                    'meta_description' => 'Meta Description',
+                    'status' => 'Status',
+                    'domain' => 'Domains',
+                    'auto_redirect_to' => 'Auto Redirect To',
+                    'auto_redirect_type' => 'Auto Redirect Type'
+                ],
+
+                
             ],
         ],
 
