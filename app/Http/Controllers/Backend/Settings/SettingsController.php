@@ -37,7 +37,8 @@ class SettingsController extends Controller
      */
     public function index(ManageSettingsRequest $request)
     {
-        return new ViewResponse('backend.settings.index');
+        return new RedirectResponse(route('admin.settings.edit', 1), []);
+        // return new ViewResponse('backend.settings.index');
     }
 
     /**
@@ -83,7 +84,7 @@ class SettingsController extends Controller
     {
         $this->repository->update($setting, $request->except(['_token', '_method']));
 
-        return new RedirectResponse(route('admin.settings.index'), ['flash_success' => __('alerts.backend.settings.updated')]);
+        return new RedirectResponse(route('admin.settings.edit', 1), ['flash_success' => __('alerts.backend.settings.updated')]);
     }
 
     /**

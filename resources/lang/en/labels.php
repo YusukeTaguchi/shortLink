@@ -198,6 +198,11 @@ return [
                     'createdby' => 'Created By',
                     'createdat' => 'Created At',
                     'total' => 'link total|links total',
+                    'keywords' => 'Keywords',
+                    'description' => 'Description',
+                    'thumbnail_image' => 'Thumbnail Image',
+                    'notes' => 'Notes',
+                    'short_url' => 'Short URL'
                 ],
             ],
 
@@ -230,17 +235,19 @@ return [
                     'createdby' => 'Created By',
                     'createdat' => 'Created At',
                     'total' => 'link total|links total',
+                    'domain' => 'Domains',
+                    'url' => 'URL'
                 ],
             ],
 
             'settings' => [
                 'all' => 'All Settings',
                 'active' => 'URL List',
-                'create' => 'Create Link',
-                'deactivated' => 'Deactivated Links',
-                'deleted' => 'Deleted Link',
-                'edit' => 'Edit Link',
-                'management' => 'Short URL',
+                'create' => 'Create Setting',
+                'deactivated' => 'Deactivated Settings',
+                'deleted' => 'Deleted Setting',
+                'edit' => 'Edit Setting',
+                'management' => 'Settings',
 
                 'table' => [
                     'created' => 'Created',
@@ -254,24 +261,27 @@ return [
                     'tags' => 'Tags',
                     'meta_title' => 'Meta Title',
                     'slug' => 'Slug',
-                    'cannonical_link' => 'Cannonical Link',
+                    'cannonical_setting' => 'Cannonical Setting',
                     'meta_keywords' => 'Meta Keywords',
                     'meta_description' => 'Meta Description',
                     'status' => 'Status',
                     'createdby' => 'Created By',
                     'createdat' => 'Created At',
-                    'total' => 'link total|links total',
+                    'total' => 'setting total|settins total',
+                    
+
+
                 ],
             ],
 
             'redirect-links' => [
                 'all' => 'All Redirect Links',
-                'active' => 'URL List',
-                'create' => 'Create Link',
-                'deactivated' => 'Deactivated Links',
-                'deleted' => 'Deleted Link',
-                'edit' => 'Edit Link',
-                'management' => 'Short URL',
+                'active' => 'Redirect Links List',
+                'create' => 'Create Redirect Link',
+                'deactivated' => 'Deactivated Redirect Links',
+                'deleted' => 'Deleted Redirect Link',
+                'edit' => 'Edit Redirect Link',
+                'management' => 'Redirect Links',
 
                 'table' => [
                     'created' => 'Created',
@@ -285,13 +295,14 @@ return [
                     'tags' => 'Tags',
                     'meta_title' => 'Meta Title',
                     'slug' => 'Slug',
-                    'cannonical_link' => 'Cannonical Link',
                     'meta_keywords' => 'Meta Keywords',
                     'meta_description' => 'Meta Description',
                     'status' => 'Status',
                     'createdby' => 'Created By',
                     'createdat' => 'Created At',
-                    'total' => 'link total|links total',
+                    'total' => 'redirect link total|redirect links total',
+                    'domain' => 'Domains',
+                    'url' => 'URL'
                 ],
             ],
 

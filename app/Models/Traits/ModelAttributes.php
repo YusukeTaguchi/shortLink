@@ -10,7 +10,7 @@ trait ModelAttributes
     public function getEditButtonAttribute($permission, $route)
     {
         if (access()->allow($permission)) {
-            return '<a href="'.route($route, $this).'" data-toggle="tooltip" data-placement="top" title="'.trans('buttons.general.crud.edit').'" class="btn btn-primary btn-sm">
+            return '<a href="'.route($route, $this).'" data-toggle="tooltip" data-placement="top" title="'.trans('buttons.general.crud.edit').'" class="btn btn-primary btn-sm mr-1">
                         <i class="fas fa-edit"></i>
                     </a>';
         }

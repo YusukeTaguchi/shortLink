@@ -25,8 +25,8 @@
                     <table id="redirect-links-table" class="table" data-ajax_url="{{ route("admin.redirect-links.get") }}">
                         <thead>
                             <tr>
-                                <th>{{ trans('labels.backend.access.redirect-links.table.question') }}</th>
-                                <th>{{ trans('labels.backend.access.redirect-links.table.answer') }}</th>
+                                <th>{{ trans('labels.backend.access.redirect-links.table.domain') }}</th>
+                                <th>{{ trans('labels.backend.access.redirect-links.table.url') }}</th>
                                 <th>{{ trans('labels.backend.access.redirect-links.table.status') }}</th>
                                 <th>{{ trans('labels.backend.access.redirect-links.table.createdat') }}</th>
                                 <th>{{ trans('labels.general.actions') }}</th>

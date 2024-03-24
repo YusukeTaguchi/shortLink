@@ -1,3 +1,6 @@
+<script src="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.9.2/min/dropzone.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.9.2/min/dropzone.min.css">
+
 <div class="card-body">
     <div class="row">
         <div class="col-sm-5">
@@ -19,6 +22,33 @@
 
                 <div class="col-md-10">
                     {{ Form::text('title', null, ['class' => 'form-control', 'placeholder' => trans('validation.attributes.backend.access.links.title'), 'required' => 'required']) }}
+                </div>
+                <!--col-->
+            </div>
+
+            <div class="form-group row">
+                {{ Form::label('fake', trans('validation.attributes.backend.access.links.fake'), ['class' => 'col-md-2 from-control-label required']) }}
+
+                @php
+                    $fake = isset($link) ? '' : 'checked'
+                @endphp
+                
+                <div class="col-md-10">
+                    <div class="checkbox d-flex align-items-center">
+                        <label class="switch switch-label switch-pill switch-primary mr-2" for="role-1"><input class="switch-input" type="checkbox" name="fake" id="role-1" value="1" {{ (isset($link->fake) && $link->fake === 1) ? "checked" : $fake }}><span class="switch-slider" data-checked="on" data-unchecked="off"></span></label>
+                    </div>
+                </div>
+                <!--col-->
+            </div>
+            <!--form-group-->
+            
+            <!--form-group-->
+
+            <div class="form-group row">
+                {{ Form::label('domain_id', trans('validation.attributes.backend.access.links.domains'), ['class' => 'col-md-2 from-control-label required']) }}
+
+                <div class="col-md-10">
+                    {{ Form::select('domain_id', $domains, null, ['class' => 'form-control categories box-size', 'data-placeholder' => trans('validation.attributes.backend.access.links.domains'), 'required' => 'required']) }}
                 </div>
                 <!--col-->
             </div>
@@ -80,7 +110,6 @@
                 </div>
                 @endif
             </div>
-            <!--form-group-->
 
             <div class="form-group row">
                 {{ Form::label('notes', trans('validation.attributes.backend.access.links.notes'), ['class' => 'col-md-2 from-control-label required']) }}
@@ -115,3 +144,27 @@
     });
 </script>
 @stop
+
+@push('after-scripts')
+<script>
+    Dropzone.autoDiscover = false;
+    var myDropzone = new Dropzone("#dropzone", {
+        url: "/upload", 
+        maxFiles: 1, 
+        maxFilesize: 10,
+        acceptedFiles: ".jpeg,.jpg,.png,.gif", 
+        addRemoveLinks: true, 
+        dictDefaultMessage: "Drag & Drop or Click to Upload", 
+        dictRemoveFile: "Remove",
+        dictMaxFilesExceeded: "You can only upload 1 file.", 
+        dictFileTooBig: "File is too big (10MB). Max filesize: 10MB.", 
+        dictInvalidFileType: "You can't upload files of this type." 
+    });
+
+    myDropzone.on("success", function(file, response) {
+    });
+
+    myDropzone.on("removedfile", function(file) {
+    });
+</script>
+@endpush

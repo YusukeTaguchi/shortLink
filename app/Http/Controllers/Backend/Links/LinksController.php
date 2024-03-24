@@ -13,6 +13,7 @@ use App\Models\Link;
 use App\Models\Domain;
 use App\Repositories\Backend\LinksRepository;
 use Illuminate\Support\Facades\View;
+use GuzzleHttp\Client;
 
 class LinksController extends Controller
 {
@@ -71,7 +72,45 @@ class LinksController extends Controller
      */
     public function edit(Link $link, ManageLinksRequest $request)
     {
-        return new EditResponse($link, $link->statuses);
+        $domains = Domain::getSelectData();
+        // dd($domains);
+        return new EditResponse($link, $domains, $link->statuses);
+    }
+
+     /**
+     * @param \App\Models\Link $link
+     * @param \App\Http\Requests\Backend\Links\ManageLinksRequest $request
+     *
+     * @return \App\Http\Responses\Backend\Link\EditResponse
+     */
+    public function sync($id, ManageLinksRequest $request)
+    {
+        $link = Link::find($id);
+
+        // Build the URL of the webpage based on the link's slug
+        $url = config('app.url') . '/' . $link->slug;
+
+        // URL of Facebook's Debug Tool
+        $debuggerUrl = 'https://developers.facebook.com/tools/debug/';
+
+        // Create an instance of the HTTP client
+        $httpClient = new Client();
+
+        // Send a POST request to Facebook's Debug Tool
+        $response = $httpClient->post($debuggerUrl, [
+            'id' => $url,  // URL to debug
+            'scrape' => 'true'  // Force scraping of the URL content
+        ]);
+
+        // Check the response from Facebook's Debug Tool
+        if ($response->getStatusCode() == 200) {
+            // If the response is successful, handle the debug result
+            $debugResult = $response->getBody()->getContents();
+        } else {
+            // If the response is not successful, handle the error
+            return new RedirectResponse(route('admin.links.index'), ['flash_success' => __('alerts.backend.links.created')]);
+        }
+        return new RedirectResponse(route('admin.links.index'), ['flash_success' => __('alerts.backend.links.created')]);
     }
 
     /**

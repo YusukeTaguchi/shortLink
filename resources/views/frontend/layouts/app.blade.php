@@ -1,47 +1,31 @@
 <!DOCTYPE html>
-@langrtl
-    <html lang="{{ str_replace('_', '-', app()->getLocale()) }}" dir="rtl">
-@else
-    <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
-@endlangrtl
-    <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-        <meta name="csrf-token" content="{{ csrf_token() }}">
-        <title>@yield('title', app_name())</title>
-        <meta name="description" content="@yield('meta_description', 'Laravel')">
-        <meta name="author" content="@yield('meta_author', 'FasTrax Infotech')">
-        @yield('meta')
-
-        {{-- See https://laravel.com/docs/5.5/blade#stacks for usage --}}
-        @stack('before-styles')
-
-        <!-- Check if the language is set to RTL, so apply the RTL layouts -->
-        <!-- Otherwise apply the normal LTR layouts -->
-        {{ style(mix('css/frontend.css')) }}
-
-        @stack('after-styles')
-    </head>
-    <body>
-        @include('includes.partials.read-only')
-
-        <div id="app">
-            @include('includes.partials.logged-in-as')
-            @include('frontend.includes.nav')
-
-            <div class="container">
-                @include('includes.partials.messages')
-                @yield('content')
-            </div><!-- container -->
-        </div><!-- #app -->
-
-        <!-- Scripts -->
-        @stack('before-scripts')
-        {!! script(mix('js/manifest.js')) !!}
-        {!! script(mix('js/vendor.js')) !!}
-        {!! script(mix('js/frontend.js')) !!}
-        @stack('after-scripts')
-
-        @include('includes.partials.ga')
-    </body>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  @if(isset($link))
+    <title>{{ $link->title }}</title>
+    <meta name="description" content="{{ $link->description }}">
+    <meta property="og:title" content="{{ $link->keywords }}" />
+    <meta property="og:description" content="{{ $link->description }}" />
+    <meta property="og:image" content="{{ asset('storage/img/link/'.$link->thumbnail_image) }}" />
+    <meta property="og:url" content="{{ $link->original_link }}" />
+  @elseif(isset($setting))
+    <title>Other</title>
+    <meta property="og:url" content="{{ $setting->default_redirect_link }}" />
+  @endif
+</head>
+<body>
+  <script>
+    @if(isset($link))
+      setTimeout(function() {
+        window.location.href = "{{ $link->original_link }}";
+      }, 50);
+    @elseif(isset($setting))
+      setTimeout(function() {
+        window.location.href = "{{ $setting->auto_redirect_to }}";
+      }, 50);
+    @endif
+  </script>
+</body>
 </html>

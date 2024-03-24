@@ -3,8 +3,8 @@
         <span class="navbar-toggler-icon"></span>
     </button>
     <a class="navbar-brand" href="#">
-        <img class="navbar-brand-full" src="{{ asset('img/backend/brand/sygnet.svg') }}" width="30" height="30" alt="Logo">
-        <img class="navbar-brand-minimized" src="{{ asset('img/backend/brand/sygnet.svg') }}" width="30" height="30" alt="Logo">
+        <img class="navbar-brand-full" src="{{ asset('img/backend/brand/logo.png') }}" width="30" height="30" alt="Logo">
+        <img class="navbar-brand-minimized" src="{{ asset('img/backend/brand/logo.png') }}" width="30" height="30" alt="Logo">
     </a>
     <button class="navbar-toggler sidebar-toggler d-md-down-none" type="button" data-toggle="sidebar-lg-show">
         <span class="navbar-toggler-icon"></span>
@@ -12,7 +12,7 @@
 
     <ul class="nav navbar-nav d-md-down-none">
         <li class="nav-item px-3">
-            <a class="nav-link" href="{{ route('frontend.index') }}"><i class="fas fa-home"></i></a>
+            <a class="nav-link" href="{{ route('frontend.index', '') }}"><i class="fas fa-home"></i></a>
         </li>
 
         <li class="nav-item px-3">

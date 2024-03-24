@@ -26,6 +26,8 @@
                         <thead>
                             <tr>
                                 <th>{{ trans('labels.backend.access.links.table.title') }}</th>
+                                <th>{{ trans('labels.backend.access.links.table.thumbnail_image') }}</th>
+                                <th>{{ trans('labels.backend.access.links.table.short_url') }}</th>
                                 <th>{{ trans('labels.backend.access.links.table.status') }}</th>
                                 <th>{{ trans('labels.backend.access.links.table.createdby') }}</th>
                                 <th>{{ trans('labels.backend.access.links.table.createdat') }}</th>

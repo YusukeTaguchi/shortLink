@@ -48,6 +48,31 @@ return [
             'deleted' => 'The blog was successfully deleted.',
         ],
 
+
+        'links' => [
+            'created' => 'The link was successfully created.',
+            'updated' => 'The link was successfully updated.',
+            'deleted' => 'The link was successfully deleted.',
+        ],
+
+        'redirect-links' => [
+            'created' => 'The redirect link was successfully created.',
+            'updated' => 'The redirect link was successfully updated.',
+            'deleted' => 'The redirect link was successfully deleted.',
+        ],
+
+        'domains' => [
+            'created' => 'The domain was successfully created.',
+            'updated' => 'The domain was successfully updated.',
+            'deleted' => 'The domain was successfully deleted.',
+        ],
+
+        'settings' => [
+            'created' => 'The setting was successfully created.',
+            'updated' => 'The setting was successfully updated.',
+            'deleted' => 'The setting was successfully deleted.',
+        ],
+
         'blog-category' => [
             'created' => 'The blog category was successfully created.',
             'updated' => 'The blog category was successfully updated.',

@@ -135,7 +135,7 @@ INTRO
      * - 'logo' => 'img/logo.png' // for `laravel` type
      *
      */
-    'logo' => false,
+    'logo' => 'img/logo.png',
 
     // The router your API is using (Laravel or Dingo).
     'router' => 'laravel',

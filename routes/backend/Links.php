@@ -7,4 +7,7 @@ Route::group(['namespace' => 'Links'], function () {
     //For DataTables
     Route::post('links/get', 'LinksTableController')
         ->name('links.get');
+
+    // Sync Links
+    Route::get('links/{id}/sync', 'LinksController@sync')->name('links.sync');
 });
