@@ -145,26 +145,3 @@
 </script>
 @stop
 
-@push('after-scripts')
-<script>
-    Dropzone.autoDiscover = false;
-    var myDropzone = new Dropzone("#dropzone", {
-        url: "/upload", 
-        maxFiles: 1, 
-        maxFilesize: 10,
-        acceptedFiles: ".jpeg,.jpg,.png,.gif", 
-        addRemoveLinks: true, 
-        dictDefaultMessage: "Drag & Drop or Click to Upload", 
-        dictRemoveFile: "Remove",
-        dictMaxFilesExceeded: "You can only upload 1 file.", 
-        dictFileTooBig: "File is too big (10MB). Max filesize: 10MB.", 
-        dictInvalidFileType: "You can't upload files of this type." 
-    });
-
-    myDropzone.on("success", function(file, response) {
-    });
-
-    myDropzone.on("removedfile", function(file) {
-    });
-</script>
-@endpush

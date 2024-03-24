@@ -108,6 +108,7 @@ class LinksRepository extends BaseRepository
     public function create(array $input)
     {
         return DB::transaction(function () use ($input) {
+            $input['fake'] = $input['fake'] ?? 0;
             $input['slug'] = Str::slug($input['title']);
             $input['created_by'] = auth()->user()->id;
 
@@ -132,6 +133,7 @@ class LinksRepository extends BaseRepository
     {
 
         $input['slug'] = Str::slug($input['title']);
+        $input['fake'] = $input['fake'] ?? 0;
         $input['updated_by'] = auth()->user()->id;
 
         // Uploading Image
