@@ -32,8 +32,7 @@
                             data: 'slug', 
                             name: 'links.slug',
                             render: function(data, type, full, meta) {
-                                var domain = window.location.protocol + '//' + window.location.hostname; 
-                                return '<div class="slug-value">' + domain + '/' + data + '</div> <button class="copy-btn"><i class="fas fa-copy"></i></button>';
+                                return '<div class="slug-value">' + full.url + '/' + data + '</div> <button class="copy-btn"><i class="fas fa-copy"></i></button>';
                             }
                         },
                         { data: 'display_status', name: 'links.status' },
