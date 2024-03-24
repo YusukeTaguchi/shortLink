@@ -28,7 +28,7 @@
                 {{ Form::label('url', trans('validation.attributes.backend.access.domains.url'), ['class' => 'col-md-2 from-control-label required']) }}
 
                 <div class="col-md-10">
-                    {{ Form::textarea('url', null, ['class' => 'form-control', 'placeholder' => trans('validation.attributes.backend.access.domains.url')]) }}
+                    {{ Form::text('url', null, ['class' => 'form-control', 'placeholder' => trans('validation.attributes.backend.access.domains.url')]) }}
                 </div>
                 <!--col-->
             </div>

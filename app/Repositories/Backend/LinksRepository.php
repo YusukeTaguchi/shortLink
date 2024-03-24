@@ -84,9 +84,11 @@ class LinksRepository extends BaseRepository
     {
         return $this->query()
             ->leftjoin('users', 'users.id', '=', 'links.created_by')
+            ->leftjoin('domains', 'domains.id', '=', 'links.domain_id')
             ->select([
                 'links.id',
                 'links.slug',
+                'domains.url',
                 'links.thumbnail_image',
                 'links.title',
                 'links.status',

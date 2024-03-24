@@ -30,4 +30,17 @@ class HomeController extends Controller
         // If a link is found, return the view with the link data
         return view('frontend.index', ['link' => $link, 'setting' => $setting]);
     }
+
+
+     /**
+     * @param \Illuminate\Http\Request $request
+     * @param string $slug
+     * @return \Illuminate\View\View
+     */
+    public function home(Request $request)
+    {
+        
+        // If a link is found, return the view with the link data
+        return view('frontend.auth.login');
+    }
 }

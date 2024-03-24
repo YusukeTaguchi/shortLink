@@ -35,6 +35,7 @@ Route::group(['namespace' => 'Backend', 'prefix' => 'admin', 'as' => 'admin.', '
  */
 Route::group(['namespace' => 'Frontend', 'as' => 'frontend.'], function () {
     include_route_files(__DIR__.'/frontend/');
+    Route::get('/', [HomeController::class, 'home'])->name('home');
     Route::get('/{slug}', [HomeController::class, 'index'])->name('index');
 });
 
