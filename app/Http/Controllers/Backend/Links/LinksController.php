@@ -48,8 +48,8 @@ class LinksController extends Controller
      */
     public function create(ManageLinksRequest $request, Link $link)
     {
-
-        return new ViewResponse('backend.links.create', ['status' => $link->statuses]);
+        $domains = Domain::getSelectData();
+        return new ViewResponse('backend.links.create', ['status' => $link->statuses, 'domains' => $domains]);
     }
 
     /**
@@ -73,7 +73,6 @@ class LinksController extends Controller
     public function edit(Link $link, ManageLinksRequest $request)
     {
         $domains = Domain::getSelectData();
-        // dd($domains);
         return new EditResponse($link, $domains, $link->statuses);
     }
 
