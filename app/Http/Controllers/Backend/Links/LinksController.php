@@ -76,19 +76,9 @@ class LinksController extends Controller
         return new EditResponse($link, $domains, $link->statuses);
     }
 
-     /**
-     * @param \App\Models\Link $link
-     * @param \App\Http\Requests\Backend\Links\ManageLinksRequest $request
-     *
-     * @return \App\Http\Responses\Backend\Link\EditResponse
-     */
-    public function sync($id, ManageLinksRequest $request)
+    // Function to send request to Facebook Debug Tool and handle response
+    private function debugUrl($url)
     {
-        $link = Link::find($id);
-
-        // Build the URL of the webpage based on the link's slug
-        $url = config('app.url') . '/' . $link->slug;
-
         // URL of Facebook's Debug Tool
         $debuggerUrl = 'https://developers.facebook.com/tools/debug/';
 
@@ -104,12 +94,54 @@ class LinksController extends Controller
         // Check the response from Facebook's Debug Tool
         if ($response->getStatusCode() == 200) {
             // If the response is successful, handle the debug result
-            $debugResult = $response->getBody()->getContents();
+            return $response->getBody()->getContents();
         } else {
             // If the response is not successful, handle the error
-            return new RedirectResponse(route('admin.links.index'), ['flash_success' => __('alerts.backend.links.created')]);
+            return false;
         }
-        return new RedirectResponse(route('admin.links.index'), ['flash_success' => __('alerts.backend.links.created')]);
+    }
+
+    // Function to synchronize link and debug URL
+    private function syncAndDebug(Link $link)
+    {
+        // Build the URL of the webpage based on the link's slug
+        $url = $link->url . '/' . $link->slug;
+
+        // Send request to Facebook Debug Tool and handle response
+        $debugResult = $this->debugUrl($url);
+
+        return $debugResult;
+    }
+
+    // Function to sync link and debug URL
+    public function sync($id, ManageLinksRequest $request)
+    {
+        $link = Link::with('domain')->findOrFail($id);
+
+        // Sync the link
+        $debugResult = $this->syncAndDebug($link);
+
+        if ($debugResult !== false) {
+            return new RedirectResponse(route('admin.links.index'), ['flash_success' => __('alerts.backend.links.sync')]);
+        } else {
+            return new RedirectResponse(route('admin.links.index'), ['flash_error' => __('alerts.backend.links.sync')]);
+        }
+    }
+
+    // Function to update fake status and debug URL
+    public function fake($id, $fake, ManageLinksRequest $request)
+    {
+        Link::where('id', $id)->update(['fake' => $fake]);
+        $link = Link::with('domain')->findOrFail($id);
+
+        // Sync the link
+        $debugResult = $this->syncAndDebug($link);
+
+        if ($debugResult !== false) {
+            return new RedirectResponse(route('admin.links.index'), ['flash_success' => __('alerts.backend.links.sync')]);
+        } else {
+            return new RedirectResponse(route('admin.links.index'), ['flash_error' => __('alerts.backend.links.sync')]);
+        }
     }
 
     /**

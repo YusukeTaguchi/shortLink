@@ -73,20 +73,16 @@ class UserRepository extends BaseRepository
     public function create(array $data)
     {
         $roles = $data['assignees_roles'];
-        $permissions = $data['permissions'];
 
         unset($data['assignees_roles']);
-        unset($data['permissions']);
 
         $user = $this->createUserStub($data);
 
-        return DB::transaction(function () use ($user, $data, $roles, $permissions) {
+        return DB::transaction(function () use ($user, $data, $roles) {
             if ($user->save()) {
                 //Attach new roles
                 $user->attachRoles($roles);
 
-                // Attach New Permissions
-                $user->attachPermissions($permissions);
 
                 //Send confirmation email if requested and account approval is off
                 if (isset($data['confirmation_email']) && $user->confirmed == 0) {
@@ -114,18 +110,15 @@ class UserRepository extends BaseRepository
     public function update(User $user, array $data)
     {
         $roles = $data['assignees_roles'];
-        $permissions = $data['permissions'];
 
         unset($data['assignees_roles']);
-        unset($data['permissions']);
 
-        return DB::transaction(function () use ($user, $data, $roles, $permissions) {
+        return DB::transaction(function () use ($user, $data, $roles) {
             $user->status = isset($data['status']) && $data['status'] == '1' ? 1 : 0;
             $user->confirmed = isset($data['confirmed']) && $data['confirmed'] == '1' ? 1 : 0;
 
             if ($user->update($data)) {
                 $user->roles()->sync($roles);
-                $user->permissions()->sync($permissions);
 
                 event(new UserUpdated($user));
 
@@ -377,7 +370,7 @@ class UserRepository extends BaseRepository
     public function getActivePaginated($paged = 25, $orderBy = 'created_at', $sort = 'desc'): LengthAwarePaginator
     {
         return $this->query()
-            ->with('roles', 'permissions', 'providers')
+            ->with('roles', 'providers')
             ->active()
             ->orderBy($orderBy, $sort)
             ->paginate($paged);
@@ -393,7 +386,7 @@ class UserRepository extends BaseRepository
     public function getInactivePaginated($paged = 25, $orderBy = 'created_at', $sort = 'desc'): LengthAwarePaginator
     {
         return $this->query()
-            ->with('roles', 'permissions', 'providers')
+            ->with('roles', 'providers')
             ->active(false)
             ->orderBy($orderBy, $sort)
             ->paginate($paged);
@@ -409,7 +402,7 @@ class UserRepository extends BaseRepository
     public function getDeletedPaginated($paged = 25, $orderBy = 'created_at', $sort = 'desc'): LengthAwarePaginator
     {
         return $this->query()
-            ->with('roles', 'permissions', 'providers')
+            ->with('roles', 'providers')
             ->onlyTrashed()
             ->orderBy($orderBy, $sort)
             ->paginate($paged);

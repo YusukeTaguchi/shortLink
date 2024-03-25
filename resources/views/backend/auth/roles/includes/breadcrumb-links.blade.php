@@ -5,7 +5,6 @@
 
             <div class="dropdown-menu" aria-labelledby="breadcrumb-dropdown-1">
                 <a class="dropdown-item" href="{{ route('admin.auth.role.index') }}">{{ trans('labels.backend.access.roles.all') }}</a>
-                <a class="dropdown-item" href="{{ route('admin.auth.role.create') }}">{{ trans('labels.backend.access.roles.create') }}</a>
             </div>
         </div><!--dropdown-->
 

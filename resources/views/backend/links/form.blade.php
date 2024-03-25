@@ -63,16 +63,27 @@
                 <!--col-->
             </div>
             <!--form-group-->
+            @if ($logged_in_user->isAdmin() || $logged_in_user->isExecutive())
+                <div class="form-group row">
+                    {{ Form::label('original_link', trans('validation.attributes.backend.access.links.original_link'), ['class' => 'col-md-2 from-control-label required']) }}
 
-            <div class="form-group row">
-                {{ Form::label('original_link', trans('validation.attributes.backend.access.links.original_link'), ['class' => 'col-md-2 from-control-label required']) }}
-
-                <div class="col-md-10">
-                    {{ Form::text('original_link', null, ['class' => 'form-control', 'placeholder' => trans('validation.attributes.backend.access.links.original_link')]) }}
+                    <div class="col-md-10">
+                        {{ Form::text('original_link', null, ['class' => 'form-control', 'placeholder' => trans('validation.attributes.backend.access.links.original_link')]) }}
+                    </div>
+                    <!--col-->
                 </div>
-                <!--col-->
-            </div>
-            <!--form-group-->
+                <!--form-group-->
+            @else
+                <div class="form-group row">
+                    {{ Form::label('original_link', trans('validation.attributes.backend.access.links.original_link'), ['class' => 'col-md-2 from-control-label required']) }}
+
+                    <div class="col-md-10">
+                        {{ Form::text('original_link', null, ['class' => 'form-control', 'disabled' => 'disabled']) }}
+                    </div>
+                    <!--col-->
+                </div>
+                <!--form-group-->
+            @endif
 
             <div class="form-group row">
                 {{ Form::label('keywords', trans('validation.attributes.backend.access.links.keywords'), ['class' => 'col-md-2 from-control-label required']) }}
@@ -123,9 +134,9 @@
 
             <div class="form-group row">
                 {{ Form::label('status', trans('validation.attributes.backend.access.links.status'), ['class' => 'col-md-2 from-control-label required']) }}
-
+ 
                 <div class="col-md-10">
-                    {{ Form::select('status', $status, null, ['class' => 'form-control select2 status box-size', 'placeholder' => trans('validation.attributes.backend.access.links.status'), 'required' => 'required']) }}
+                    {{ Form::select('status', $status, 1, ['class' => 'form-control select2 status box-size', 'placeholder' => trans('validation.attributes.backend.access.links.status'), 'required' => 'required']) }}
                 </div>
                 <!--col-->
             </div>

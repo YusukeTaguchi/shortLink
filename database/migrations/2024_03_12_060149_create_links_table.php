@@ -14,7 +14,7 @@ class CreateLinksTable extends Migration
             $table->increments('id');
             $table->string('title', 300);
             $table->string('thumbnail_image', 300)->nullable();
-            $table->text('notes');
+            $table->text('notes')->nullable();
             $table->integer('domain_id')->nullable();
             $table->integer('type_display')->nullable();
             $table->string('original_link', 1000)->nullable();

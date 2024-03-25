@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Frontend;
 use App\Http\Controllers\Controller;
 use App\Models\Link;
 use App\Models\Setting;
+use App\Models\View;
 use Illuminate\Http\Request;
 
 class HomeController extends Controller
@@ -18,6 +19,13 @@ class HomeController extends Controller
     {
         // Search in the Link table with the provided slug
         $link = Link::where('slug', $slug)->first();
+
+        // Count
+        View::create([
+            'slug' => $slug,
+            'viewed' => 2,
+            'date' => now()->format('Y-m-d H:i:s')
+        ]);
 
         // 
         if ($link && $link->fake == 0) {

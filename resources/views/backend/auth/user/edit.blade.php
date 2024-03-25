@@ -93,32 +93,6 @@
                 </div>
                 <!--form control-->
 
-                <div class="form-group row">
-                    {{ Form::label('associated-permissions', trans('validation.attributes.backend.access.roles.associated_permissions'), ['class' => 'col-md-2 control-label']) }}
-                    <div class="col-md-10 search-permission">
-                        <div id="available-permissions">
-                            <div>
-                                <input type="text" class="form-control search-button" placeholder="Search..." />
-                            </div>
-                            <div class="get-available-permissions">
-                                @if ($permissions)
-                                @foreach ($permissions as $id => $display_name)
-                                <div>
-                                    <input type="checkbox" name="permissions[{{ $id }}]" value="{{ $id }}" id="perm_{{ $id }}" {{ isset($userPermissions) && in_array($id, $userPermissions) ? 'checked' : '' }} /> <label for="perm_{{ $id }}" style="margin-left:20px;">{{ $display_name }}</label>
-                                </div>
-                                @endforeach
-                                @else
-                                <p>There are no available permissions.</p>
-                                @endif
-                            </div>
-                            <!--col-lg-6-->
-
-                        </div>
-                        <!--available permissions-->
-                    </div>
-                    <!--col-lg-3-->
-                </div>
-                <!--form control-->
                 @endif
             </div>
             <!--col-->

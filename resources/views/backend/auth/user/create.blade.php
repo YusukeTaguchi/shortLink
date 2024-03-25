@@ -128,18 +128,7 @@
                 </div>
                 <!--form-group-->
 
-                <div class="form-group row">
-                    {{ Form::label('associated-permissions', trans('validation.attributes.backend.access.roles.associated_permissions'), ['class' => 'col-md-2 control-label']) }}
-                    <div class="col-md-10 search-permission">
-                        <div id="available-permissions">
-                            <div>
-                                <input type="text" class="form-control search-button" placeholder="Search..." />
-                            </div>
-                            <div class="get-available-permissions">
-                            </div>
-                        </div>
-                    </div>
-                </div>
+               
             </div>
             <!--col-->
         </div>

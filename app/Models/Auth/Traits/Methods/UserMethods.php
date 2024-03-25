@@ -81,6 +81,8 @@ trait UserMethods
         return $this->hasRole(config('access.users.executive_role'));
     }
 
+
+
     /**
      * @return bool
      */

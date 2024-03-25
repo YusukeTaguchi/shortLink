@@ -12,40 +12,54 @@
                     @lang('menus.backend.sidebar.dashboard')
                 </a>
             </li>
+            <li class="nav-item">
+                <a class="nav-link {{
+                    active_class(Route::is('admin/dashboard'))
+                }}" href="{{ route('admin.dashboard.today') }}">
+                    <i class="nav-icon fas fa-tachometer-alt"></i>
+                    Top Today
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link {{
+                    active_class(Route::is('admin/dashboard'))
+                }}" href="{{ route('admin.dashboard.monthly') }}">
+                    <i class="nav-icon fas fa-tachometer-alt"></i>
+                    Top Month
+                </a>
+            </li>
 
-            @if ($logged_in_user->isAdmin() || $logged_in_user->isExecutive())
-                <li class="nav-title">
-                    Management function
-                </li>
+            <li class="nav-title">
+                Management function
+            </li>
 
-                <li class="nav-item nav-dropdown {{
-                    active_class(Route::is('admin/link*'), 'open')
-                }}">
-                    <a class="nav-link nav-dropdown-toggle {{
-                        active_class(Route::is('admin/links*'))
-                    }}" href="#">
-                        <i class="nav-icon fa fa-link"></i>
-                        Links
-                    </a>
+            <li class="nav-item nav-dropdown {{
+                active_class(Route::is('admin/link*'), 'open')
+            }}">
+                <a class="nav-link nav-dropdown-toggle {{
+                    active_class(Route::is('admin/links*'))
+                }}" href="#">
+                    <i class="nav-icon fa fa-link"></i>
+                    Links
+                </a>
 
-                    <ul class="nav-dropdown-items">
-                        <li class="nav-item">
-                            <a class="nav-link {{
-                                active_class(Route::is('admin/links*'))
-                            }}" href="{{ route('admin.links.index') }}">
-                                List
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link {{
-                                active_class(Route::is('admin/links*'))
-                            }}" href="{{ route('admin.links.create') }}">
-                                Add new
-                            </a>
-                        </li>
-                    </ul>
-                </li>
-            @endif
+                <ul class="nav-dropdown-items">
+                    <li class="nav-item">
+                        <a class="nav-link {{
+                            active_class(Route::is('admin/links*'))
+                        }}" href="{{ route('admin.links.index') }}">
+                            List
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link {{
+                            active_class(Route::is('admin/links*'))
+                        }}" href="{{ route('admin.links.create') }}">
+                            Add new
+                        </a>
+                    </li>
+                </ul>
+            </li>
 
             @if ($logged_in_user->isAdmin())
                 <li class="nav-title">
@@ -83,14 +97,6 @@
                                 active_class(Route::is('admin/auth/role*'))
                             }}" href="{{ route('admin.auth.role.index') }}">
                                 @lang('labels.backend.access.roles.management')
-                            </a>
-                        </li>
-
-                        <li class="nav-item">
-                            <a class="nav-link {{
-                                active_class(Route::is('admin/auth/permission*'))
-                            }}" href="{{ route('admin.auth.permission.index') }}">
-                                @lang('labels.backend.access.permissions.management')
                             </a>
                         </li>
                     </ul>

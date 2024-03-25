@@ -23,12 +23,15 @@
             <div class="col">
                 <div class="table-responsive">
                     <table id="links-table" class="table" data-ajax_url="{{ route("admin.links.get") }}">
-                        <thead>
+                        <thead> 
                             <tr>
+                                <th>{{ trans('labels.backend.access.links.table.id') }}</th>
                                 <th>{{ trans('labels.backend.access.links.table.title') }}</th>
                                 <th>{{ trans('labels.backend.access.links.table.thumbnail_image') }}</th>
+                                <th>{{ trans('labels.backend.access.links.table.fake') }}</th>
                                 <th>{{ trans('labels.backend.access.links.table.short_url') }}</th>
                                 <th>{{ trans('labels.backend.access.links.table.status') }}</th>
+                                <th>{{ trans('labels.backend.access.links.table.total_viewed') }}</th>
                                 <th>{{ trans('labels.backend.access.links.table.createdby') }}</th>
                                 <th>{{ trans('labels.backend.access.links.table.createdat') }}</th>
                                 <th>{{ trans('labels.general.actions') }}</th>

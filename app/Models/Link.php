@@ -75,4 +75,11 @@ class Link extends BaseModel
         'display_status',
         'display_fakes',
     ];
+
+
+    // Define the relationship with Domain model
+    public function domain()
+     {
+         return $this->belongsTo(Domain::class, 'domain_id');
+     }
 }

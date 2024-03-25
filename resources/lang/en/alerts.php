@@ -53,6 +53,7 @@ return [
             'created' => 'The link was successfully created.',
             'updated' => 'The link was successfully updated.',
             'deleted' => 'The link was successfully deleted.',
+            'sync' => 'The link was successfully synced.',
         ],
 
         'redirect-links' => [

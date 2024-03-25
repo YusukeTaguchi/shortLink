@@ -4,6 +4,16 @@ Breadcrumbs::for('admin.dashboard', function ($trail) {
     $trail->push(__('strings.backend.dashboard.title'), route('admin.dashboard'));
 });
 
+Breadcrumbs::for('admin.dashboard.today', function ($trail) {
+    $trail->push(__('strings.backend.dashboard.title'), route('admin.dashboard.today'));
+});
+
+Breadcrumbs::for('admin.dashboard.monthly', function ($trail) {
+    $trail->push(__('strings.backend.dashboard.title'), route('admin.dashboard.monthly'));
+});
+
+
+
 require __DIR__.'/auth.php';
 require __DIR__.'/log-viewer.php';
 require __DIR__.'/blogs/blog.php';

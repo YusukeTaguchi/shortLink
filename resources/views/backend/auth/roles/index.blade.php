@@ -27,7 +27,6 @@
                         <thead>
                             <tr>
                                 <th>@lang('labels.backend.access.roles.table.role')</th>
-                                <th>@lang('labels.backend.access.roles.table.permissions')</th>
                                 <th>@lang('labels.backend.access.roles.table.number_of_users')</th>
                                 <th>@lang('labels.general.actions')</th>
                             </tr>

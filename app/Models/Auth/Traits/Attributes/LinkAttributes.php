@@ -303,7 +303,6 @@ trait LinkAttributes
         if (access()->user()->roles[0]->all) {
             return '<div class="btn-group" role="group" aria-label="'.trans('labels.backend.access.users.user_actions').'">
                     '.$this->getShowButtonAttribute('btn btn-success btn-sm mr-1').'
-                    '.$this->getEditButtonAttribute('btn btn-primary btn-sm mr-1').'
                     '.$this->getChangePasswordButtonAttribute('btn btn-secondary btn-sm mr-1').'
                     '.$this->checkAdmin().'    
                 </div>';

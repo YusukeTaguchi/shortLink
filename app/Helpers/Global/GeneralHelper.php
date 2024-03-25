@@ -31,11 +31,7 @@ if (! function_exists('home_route')) {
     function home_route()
     {
         if (auth()->check()) {
-            if (auth()->user()->can('view backend')) {
-                return 'admin.dashboard';
-            }
-
-            return 'frontend.user.dashboard';
+            return 'admin.dashboard';
         }
 
         return 'frontend.auth.login';

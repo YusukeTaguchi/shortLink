@@ -10,7 +10,7 @@ trait RoleAttributes
     public function getEditButtonAttribute()
     {
         if (access()->allow('edit-role')) {
-            return '<a class="btn btn-flat btn-primary btn-sm" href="'.route('admin.auth.role.edit', $this).'">
+            return '<a class="btn btn-flat btn-primary btn-sm mr-1" href="'.route('admin.auth.role.edit', $this).'">
                     <i data-toggle="tooltip" data-placement="top" title="'.trans('buttons.general.crud.edit').'" class="fas fa-edit"></i>
                 </a>';
         }
@@ -40,8 +40,6 @@ trait RoleAttributes
     public function getActionButtonsAttribute()
     {
         return '<div class="btn-group action-btn">
-                    '.$this->getEditButtonAttribute('edit-role', 'admin.auth.role.edit').'
-                    '.$this->getDeleteButtonAttribute().'
                 </div>';
     }
 }

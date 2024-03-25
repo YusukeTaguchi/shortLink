@@ -202,7 +202,9 @@ return [
                     'description' => 'Description',
                     'thumbnail_image' => 'Thumbnail Image',
                     'notes' => 'Notes',
-                    'short_url' => 'Short URL'
+                    'short_url' => 'Short URL',
+                    'fake' => 'Mode Fake',
+                    'total_viewed' => 'Total Viewed'
                 ],
             ],
 

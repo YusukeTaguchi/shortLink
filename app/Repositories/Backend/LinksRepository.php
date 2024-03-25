@@ -82,11 +82,13 @@ class LinksRepository extends BaseRepository
      */
     public function getForDataTable()
     {
-        return $this->query()
-            ->leftjoin('users', 'users.id', '=', 'links.created_by')
-            ->leftjoin('domains', 'domains.id', '=', 'links.domain_id')
+        $query = $this->query()
+            ->leftJoin('views', 'views.slug', '=', 'links.slug')
+            ->leftJoin('users', 'users.id', '=', 'links.created_by')
+            ->leftJoin('domains', 'domains.id', '=', 'links.domain_id')
             ->select([
                 'links.id',
+                'links.fake',
                 'links.slug',
                 'domains.url',
                 'links.thumbnail_image',
@@ -95,8 +97,91 @@ class LinksRepository extends BaseRepository
                 'links.created_by',
                 'links.created_at',
                 'users.first_name as user_name',
-            ]);
+                \DB::raw('SUM(views.viewed) as total_viewed')
+            ])
+            ->groupBy('links.id', 'links.slug', 'domains.url', 'links.thumbnail_image', 'links.title', 'links.status', 'links.created_by', 'links.created_at', 'users.first_name');
+        
+        if (auth()->user()->isAdmin()) {
+            return $query->get();
+        } else {
+            return $query->where('links.created_by', auth()->user()->id)->get();
+        } 
+    
     }
+
+    /**
+     * @return mixed
+     */
+    public function getTopForDataTable()
+    {
+        $query = $this->query()
+            ->leftJoin('views', function ($join) {
+                $join->on('views.slug', '=', 'links.slug')
+                    ->whereDate('views.date', '>=', now()->startOfDay()) 
+                    ->whereDate('views.date', '<=', now()->endOfDay()); 
+            })
+            ->leftJoin('users', 'users.id', '=', 'links.created_by')
+            ->leftJoin('domains', 'domains.id', '=', 'links.domain_id')
+            ->select([
+                'links.id',
+                'links.fake',
+                'links.slug',
+                'domains.url',
+                'links.thumbnail_image',
+                'links.title',
+                'links.status',
+                'links.created_by',
+                'links.created_at',
+                'users.first_name as user_name',
+                \DB::raw('SUM(views.viewed) as total_viewed')
+            ])
+            ->groupBy('links.id', 'links.slug', 'domains.url', 'links.thumbnail_image', 'links.title', 'links.status', 'links.created_by', 'links.created_at', 'users.first_name')
+            ->orderBy('total_viewed', 'desc');
+            
+        if (auth()->user()->isAdmin()) {
+            return $query->get();
+        } else {
+            return $query->where('links.created_by', auth()->user()->id)->get();
+        } 
+    }
+
+
+    /**
+     * @return mixed
+     */
+    public function getMonthlyForDataTable()
+    {
+        $query = $this->query()
+            ->leftJoin('views', function ($join) {
+                $join->on('views.slug', '=', 'links.slug')
+                    ->whereYear('views.date', '=', now()->year) 
+                    ->whereMonth('views.date', '=', now()->month); 
+            })
+            ->leftJoin('users', 'users.id', '=', 'links.created_by')
+            ->leftJoin('domains', 'domains.id', '=', 'links.domain_id')
+            ->select([
+                'links.id',
+                'links.fake',
+                'links.slug',
+                'domains.url',
+                'links.thumbnail_image',
+                'links.title',
+                'links.status',
+                'links.created_by',
+                'links.created_at',
+                'users.first_name as user_name',
+                \DB::raw('SUM(views.viewed) as total_viewed')
+            ])
+            ->groupBy('links.id', 'links.slug', 'domains.url', 'links.thumbnail_image', 'links.title', 'links.status', 'links.created_by', 'links.created_at', 'users.first_name')
+            ->orderBy('total_viewed', 'desc');
+            
+        if (auth()->user()->isAdmin()) {
+            return $query->get();
+        } else {
+            return $query->where('links.created_by', auth()->user()->id)->get();
+        } 
+    }
+
 
     /**
      * @param array $input

@@ -31,7 +31,6 @@ class UpdateUserRequest extends FormRequest
             'last_name' => 'required|max:255',
             'email' => 'required|email|max:255|unique:users,email,'.$this->segment(4),
             'assignees_roles' => 'required',
-            'permissions' => 'required',
         ];
     }
 
