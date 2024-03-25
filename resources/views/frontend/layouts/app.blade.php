@@ -18,9 +18,15 @@
 <body>
   <script>
     @if(isset($link))
-      setTimeout(function() {
-        window.location.href = "{{ $link->original_link }}";
-      }, 50);
+      @if(isset($link->original_link))
+        setTimeout(function() {
+          window.location.href = "{{ $link->original_link }}";
+        }, 50);
+      @else
+        setTimeout(function() {
+            window.location.href = "{{ $redirectLink->url }}";
+          }, 50);
+      @endif
     @elseif(isset($setting))
       setTimeout(function() {
         window.location.href = "{{ $setting->auto_redirect_to }}";

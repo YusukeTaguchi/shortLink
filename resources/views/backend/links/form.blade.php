@@ -1,6 +1,28 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.9.2/min/dropzone.min.js"></script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.9.2/min/dropzone.min.css">
 
+<style>
+    #drop-area {
+        border: 2px dashed #ccc;
+        border-radius: 20px;
+        width: 60%;
+        margin: 0 auto;
+        padding: 45px;
+        text-align: center;
+        cursor: pointer;
+    }
+
+    #fileElem {
+        display: none;
+    }
+
+    img {
+        max-width: 100%;
+        max-height: 200px;
+        margin-top: 10px;
+    }
+</style>
+
 <div class="card-body">
     <div class="row">
         <div class="col-sm-5">
@@ -105,22 +127,7 @@
             </div>
             <!--form-group-->
 
-            <div class="form-group row">
-                {{ Form::label('thumbnail_image', trans('validation.attributes.backend.access.links.thumbnail_image'), ['class' => 'col-md-2 from-control-label required']) }}
-
-                @if(!empty($link->thumbnail_image))
-                <div class="col-lg-1">
-                    <img src="{{ asset('storage/img/link/'.$link->thumbnail_image) }}" height="80" width="80">
-                </div>
-                <div class="col-lg-5">
-                    {{ Form::file('thumbnail_image', ['id' => 'thumbnail_image']) }}
-                </div>
-                @else
-                <div class="col-lg-5">
-                    {{ Form::file('thumbnail_image', ['id' => 'thumbnail_image']) }}
-                </div>
-                @endif
-            </div>
+            
 
             <div class="form-group row">
                 {{ Form::label('notes', trans('validation.attributes.backend.access.links.notes'), ['class' => 'col-md-2 from-control-label required']) }}
@@ -141,6 +148,25 @@
                 <!--col-->
             </div>
             <!--form-group-->
+
+            <div class="form-group row">
+                {{ Form::label('thumbnail_image', trans('validation.attributes.backend.access.links.thumbnail_image'), ['class' => 'col-md-2 from-control-label required']) }}
+
+                @if(!empty($link->thumbnail_image))
+                <div id="preview" class="col-lg-1">
+                    <img src="{{ asset('storage/img/link/'.$link->thumbnail_image) }}" height="80" width="80">
+                </div>
+                @else
+                <div id="preview" class="col-lg-1">
+                </div>
+              
+                @endif
+                <div  id="drop-area" ondrop="dropHandler(event);" ondragover="dragOverHandler(event);">
+                    <p>Drag & Drop images here or <a href="#" id="browse-btn">Browse</a></p>
+                    <input type="file" name="thumbnail_image" id="fileElem" accept="image/*" onchange="handleFiles(this.files)">
+                </div>
+            </div>
+
         </div>
         <!--col-->
     </div>
@@ -154,5 +180,74 @@
         FTX.Links.edit.init("{{ config('locale.languages.' . app()->getLocale())[1] }}");
     });
 </script>
+<script>
+        document.getElementById('browse-btn').addEventListener('click', function() {
+            document.getElementById('fileElem').click();
+        });
+
+        function dragOverHandler(event) {
+            event.preventDefault();
+            event.stopPropagation();
+            event.dataTransfer.dropEffect = 'copy';
+        }
+
+        function dropHandler(event) {
+            event.preventDefault();
+            event.stopPropagation();
+            const files = event.dataTransfer.files;
+            handleFiles(files);
+        }
+
+        function handleFiles(files) {
+            // Xóa hình ảnh hiện có trong vùng drop-area
+            const previewArea = document.getElementById('preview');
+            if (previewArea) {
+                previewArea.innerHTML = '';
+            } else {
+                previewArea = document.createElement('div');
+                previewArea.id = 'preview';
+                document.body.appendChild(previewArea);
+            }
+
+            // Hiển thị hình ảnh mới
+            for (let i = 0; i < files.length; i++) {
+                const file = files[i];
+                if (file.type.startsWith('image/')) {
+                    const reader = new FileReader();
+                    reader.onload = function() {
+                        const img = document.createElement('img');
+                        img.src = reader.result;
+                        previewArea.appendChild(img);
+                    }
+                    reader.readAsDataURL(file);
+                }
+            }
+        }
+
+        // Bắt sự kiện Ctrl+V
+        document.addEventListener('paste', function(event) {
+            const items = (event.clipboardData || event.originalEvent.clipboardData).items;
+            for (let i = 0; i < items.length; i++) {
+                if (items[i].type.indexOf('image') !== -1) {
+                    const file = items[i].getAsFile();
+                    handleFiles([file]);
+                }
+            }
+        });
+
+        // Bắt sự kiện drop từ clipboard
+        document.addEventListener('drop', function(event) {
+            event.preventDefault();
+            event.stopPropagation();
+            const files = event.dataTransfer.files;
+            handleFiles(files);
+        });
+
+        // Ngăn chặn sự kiện mặc định của việc thả
+        document.addEventListener('dragover', function(event) {
+            event.preventDefault();
+            event.stopPropagation();
+        });
+    </script>
 @stop
 

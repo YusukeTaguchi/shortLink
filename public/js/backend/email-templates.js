@@ -36,7 +36,6 @@
 
         edit: {
             init: function (locale) {
-                FTX.tinyMCE.init(locale);
             }
         },
     }

@@ -26,7 +26,11 @@
                             data: 'thumbnail_image', 
                             name: 'links.thumbnail_image',
                             render: function(data, type, full, meta) {
-                                return '<div class="col-lg-1"><img src="/storage/img/link/'+data+'" height="80" width="80"></div>';
+                                if(data){
+                                    return '<div class="col-lg-1"><img src="/storage/img/link/'+data+'" height="80" width="80"></div>';
+                                }
+                                return '<div class="col-lg-1"></div>';
+                                
                             }
                         },
                         {
@@ -77,7 +81,6 @@
 
             init: function (locale) {
                 this.addHandlers(locale);
-                FTX.tinyMCE.init(locale);
             },
 
             addHandlers: function (locale) {

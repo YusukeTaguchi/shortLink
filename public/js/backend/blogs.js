@@ -47,7 +47,6 @@
 
             init: function (locale) {
                 this.addHandlers(locale);
-                FTX.tinyMCE.init(locale);
             },
 
             addHandlers: function (locale) {
