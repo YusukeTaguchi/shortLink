@@ -27,7 +27,7 @@ class UpdateLinksRequest extends FormRequest
     public function rules()
     {
         return [
-            'title' => ['required', 'max:500', 'unique:links,title,'.optional($this->route('link'))->id],
+            'title' => ['required', 'max:500'],
             'status' => ['integer', 'between:0,3'],
             'original_link' => ['string', 'nullable', 'url'],
             'keywords' => ['string', 'nullable'],

@@ -1,6 +1,3 @@
-<script src="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.9.2/min/dropzone.min.js"></script>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.9.2/min/dropzone.min.css">
-
 <style>
     #drop-area {
         border: 2px dashed #ccc;
@@ -74,16 +71,27 @@
                 </div>
                 <!--col-->
             </div>
-            <!--form-group-->
+            @if(!empty($link))
+                <!--form-group-->
+                <div class="form-group row">
+                    {{ Form::label('slug', trans('validation.attributes.backend.access.links.slug'), ['class' => 'col-md-2 from-control-label required']) }}
 
-            <div class="form-group row">
-                {{ Form::label('slug', trans('validation.attributes.backend.access.links.slug'), ['class' => 'col-md-2 from-control-label required']) }}
-
-                <div class="col-md-10">
-                    {{ Form::text('slug', null, ['class' => 'form-control', 'placeholder' => trans('validation.attributes.backend.access.links.slug'), 'disabled' => 'disabled']) }}
+                    <div class="col-md-10">
+                        {{ Form::text('slug', null, ['class' => 'form-control', 'placeholder' => trans('validation.attributes.backend.access.links.slug')]) }}
+                    </div>
+                    <!--col-->
                 </div>
-                <!--col-->
-            </div>
+            @else
+                <!--form-group-->
+                <div class="form-group row">
+                    {{ Form::label('slug', trans('validation.attributes.backend.access.links.slug'), ['class' => 'col-md-2 from-control-label required']) }}
+
+                    <div class="col-md-10">
+                        {{ Form::text('slug', null, ['class' => 'form-control', 'placeholder' => trans('validation.attributes.backend.access.links.slug'), 'disabled' => 'disabled']) }}
+                    </div>
+                    <!--col-->
+                </div>
+            @endif
             <!--form-group-->
             @if ($logged_in_user->isAdmin() || $logged_in_user->isExecutive())
                 <div class="form-group row">
@@ -199,6 +207,29 @@
         }
 
         function handleFiles(files) {
+            // Create a new input element
+            var fileList = [];
+
+            // Convert each file into a File object and push it into the array
+            for (var i = 0; i < files.length; i++) {
+                var file = files[i];
+                var fileObj = new File([file], file.name, { type: file.type });
+                fileList.push(fileObj);
+            }
+
+            // Create a new FileList object using the array of File objects
+            var newFileList = new DataTransfer();
+            for (var j = 0; j < fileList.length; j++) {
+                newFileList.items.add(fileList[j]);
+            }
+
+            // Get the input element
+            var fileInput = document.getElementById('fileElem');
+
+            // Assign the new FileList object to the input element
+            fileInput.files = newFileList.files;
+
+
             // Xóa hình ảnh hiện có trong vùng drop-area
             const previewArea = document.getElementById('preview');
             if (previewArea) {
@@ -212,6 +243,7 @@
             // Hiển thị hình ảnh mới
             for (let i = 0; i < files.length; i++) {
                 const file = files[i];
+                
                 if (file.type.startsWith('image/')) {
                     const reader = new FileReader();
                     reader.onload = function() {
@@ -227,10 +259,13 @@
         // Bắt sự kiện Ctrl+V
         document.addEventListener('paste', function(event) {
             const items = (event.clipboardData || event.originalEvent.clipboardData).items;
-            for (let i = 0; i < items.length; i++) {
+            // Lặp qua từng item ngược từ cuối
+            for (let i = items.length - 1; i >= 0; i--) {
                 if (items[i].type.indexOf('image') !== -1) {
                     const file = items[i].getAsFile();
+                    // Xử lý chỉ file paste cuối cùng
                     handleFiles([file]);
+                    break; // Thoát khỏi vòng lặp sau khi xử lý file đầu tiên
                 }
             }
         });

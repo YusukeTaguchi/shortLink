@@ -99,12 +99,13 @@ class LinksRepository extends BaseRepository
                 'users.first_name as user_name',
                 \DB::raw('SUM(views.viewed) as total_viewed')
             ])
-            ->groupBy('links.id', 'links.slug', 'domains.url', 'links.thumbnail_image', 'links.title', 'links.status', 'links.created_by', 'links.created_at', 'users.first_name');
+            ->groupBy('links.id', 'links.slug', 'domains.url', 'links.thumbnail_image', 'links.title', 'links.status', 'links.created_by', 'links.created_at', 'users.first_name')
+            ->orderBy('links.id', 'desc');
         
         if (auth()->user()->isAdmin()) {
-            return $query->get();
+            return $query;
         } else {
-            return $query->where('links.created_by', auth()->user()->id)->get();
+            return $query->where('links.created_by', auth()->user()->id);
         } 
     
     }
@@ -139,9 +140,9 @@ class LinksRepository extends BaseRepository
             ->orderBy('total_viewed', 'desc');
             
         if (auth()->user()->isAdmin()) {
-            return $query->get();
+            return $query;
         } else {
-            return $query->where('links.created_by', auth()->user()->id)->get();
+            return $query->where('links.created_by', auth()->user()->id);
         } 
     }
 
@@ -176,12 +177,15 @@ class LinksRepository extends BaseRepository
             ->orderBy('total_viewed', 'desc');
             
         if (auth()->user()->isAdmin()) {
-            return $query->get();
+            return $query;
         } else {
-            return $query->where('links.created_by', auth()->user()->id)->get();
+            return $query->where('links.created_by', auth()->user()->id);
         } 
     }
 
+    public function generateUniqueCode() {
+        return time();
+    }
 
     /**
      * @param array $input
@@ -197,12 +201,21 @@ class LinksRepository extends BaseRepository
             $input['slug'] = Str::slug($input['title']);
             $input['created_by'] = auth()->user()->id;
 
+            // Upload image if needed
             $input = $this->uploadImage($input);
 
+            // Check if the slug already exists in the database
+            $originalSlug = $input['slug'];
+            $codeString = $this->generateUniqueCode(); // You need to define this function to generate a unique code string
+            $counter = 1;
+
+            while (Link::where('slug', $input['slug'])->exists()) {
+                $input['slug'] = $originalSlug . '-' . $codeString . '-' . $counter;
+                $counter++;
+            }
+
             if ($link = Link::create($input)) {
-
                 event(new LinkCreated($link));
-
                 return $link;
             }
 
@@ -217,7 +230,7 @@ class LinksRepository extends BaseRepository
     public function update(Link $link, array $input)
     {
 
-        $input['slug'] = Str::slug($input['title']);
+        $input['slug'] = Str::slug($input['slug']);
         $input['fake'] = $input['fake'] ?? 0;
         $input['updated_by'] = auth()->user()->id;
 
@@ -228,6 +241,16 @@ class LinksRepository extends BaseRepository
         }
 
         return DB::transaction(function () use ($link, $input) {
+
+            $originalSlug = $input['slug'];
+            $codeString = $this->generateUniqueCode(); // You need to define this function to generate a unique code string
+            $counter = 1;
+
+            while (Link::where('slug', $input['slug'])->where('id', '!=', $link->id)->exists()) {
+                $input['slug'] = $originalSlug . '-' . $codeString . '-' . $counter;
+                $counter++;
+            }
+
             if ($link->update($input)) {
 
                 event(new LinkUpdated($link));

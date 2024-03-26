@@ -27,7 +27,7 @@ class CreateLinksRequest extends FormRequest
     public function rules()
     {
         return [
-            'title' => 'required|max:500|unique:links,title,'.$this->segment(4),
+            'title' => 'required|max:500',
             'thumbnail_image' => 'required',
             'keywords' => 'required',
             'description' => 'required',
