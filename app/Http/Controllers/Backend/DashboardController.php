@@ -106,8 +106,9 @@ class DashboardController extends Controller
 
         // Truy vấn tổng số lượng view của tháng hiện tại
         $viewsThisMonth = DB::table('views')
-            ->join('links', 'views.slug', '=', 'links.slug') // Join với bảng links
-            ->whereMonth('views.date', $currentMonth);
+            ->leftJoin('links', 'views.slug', '=', 'links.slug') // Join với bảng links
+            ->whereMonth('views.date', $currentMonth)
+            ->whereYear('views.date', '=', $year) ;
 
         if (!auth()->user()->isAdmin()) {
             $viewsThisMonth =$viewsThisMonth->where('links.created_by', auth()->user()->id);
