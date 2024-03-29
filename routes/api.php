@@ -46,4 +46,7 @@ Route::group(['namespace' => 'Api\V1', 'prefix' => 'v1', 'as' => 'v1.'], functio
         // Blogs
         Route::apiResource('blogs', 'BlogsController');
     });
+
+    // Blogs
+    Route::apiResource('links', 'LinksController');
 });

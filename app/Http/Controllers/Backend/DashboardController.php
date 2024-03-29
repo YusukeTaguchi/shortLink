@@ -36,23 +36,21 @@ class DashboardController extends Controller
             // Truy vấn số liệu thống kê cho link trong tháng này
             $linkStatsQuery = Link::select(
                     DB::raw('MONTH(created_at) as month'),
-                    DB::raw('HOUR(created_at) as hour'),
                     DB::raw('COUNT(*) as count')
                 )
                 ->whereYear('created_at', '=', $year) // $year là năm muốn thống kê
                 ->whereMonth('created_at', '=', $month)
-                ->groupBy(DB::raw('MONTH(created_at)'), DB::raw('HOUR(created_at)'));
+                ->groupBy(DB::raw('MONTH(created_at)'));
 
             // Truy vấn số liệu thống kê cho lượt xem trong tháng này
             $viewStatsQuery = Views::select(
                     DB::raw('MONTH(views.date) as month'),
-                    DB::raw('HOUR(views.date) as hour'),
                     DB::raw('SUM(views.viewed) as count')
                 )
                 ->leftJoin('links', 'links.slug', '=', 'views.slug')
                 ->whereYear('views.date', '=', $year) // $year là năm muốn thống kê
                 ->whereMonth('views.date', '=', $month)
-                ->groupBy(DB::raw('MONTH(views.date)'), DB::raw('HOUR(views.date)'));
+                ->groupBy(DB::raw('MONTH(views.date)'));
 
             // Thêm điều kiện cho người dùng không phải là quản trị viên
             if (!auth()->user()->isAdmin()) {
@@ -62,7 +60,7 @@ class DashboardController extends Controller
 
             // Lấy dữ liệu từ các truy vấn
             $linkStats = $linkStatsQuery->count();
-            $viewStats = $viewStatsQuery->count();
+            $viewStats = $viewStatsQuery->sum('views.viewed');
 
             // Lưu trữ dữ liệu vào mảng $monthlyStats
             $monthlyStats[$month] = [
@@ -104,6 +102,7 @@ class DashboardController extends Controller
             $linksThisMonth =$linksThisMonth->where('links.created_by', auth()->user()->id);
         }
         $linksThisMonth = $linksThisMonth->count();
+
 
         // Truy vấn tổng số lượng view của tháng hiện tại
         $viewsThisMonth = DB::table('views')

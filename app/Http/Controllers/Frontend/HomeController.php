@@ -24,7 +24,7 @@ class HomeController extends Controller
         // Count
         View::create([
             'slug' => $slug,
-            'viewed' => 2,
+            'viewed' => 1,
             'date' => now()->format('Y-m-d H:i:s')
         ]);
 
