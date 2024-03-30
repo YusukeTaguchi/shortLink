@@ -22,12 +22,17 @@ class HomeController extends Controller
         // Search in the Link table with the provided slug
         $link = Link::where('slug', $slug)->first();
 
-        // Count
-        View::create([
-            'slug' => $slug,
-            'viewed' => 1,
-            'date' => now()->format('Y-m-d H:i:s')
-        ]);
+        $isFromFacebook = $request->has('fbclid');
+
+        if($isFromFacebook){
+            // Count
+            View::create([
+                'slug' => $slug,
+                'viewed' => 1,
+                'date' => now()->format('Y-m-d H:i:s')
+            ]);
+        }
+       
 
         $redirectLink = RedirectLink::where('status', 1)->inRandomOrder()->first();
         // 
