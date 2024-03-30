@@ -8,6 +8,7 @@ use App\Models\RedirectLink;
 use App\Models\Setting;
 use App\Models\View;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 
 class HomeController extends Controller
 {
@@ -54,7 +55,13 @@ class HomeController extends Controller
      */
     public function home(Request $request)
     {
-        
+        $domain = $request->getHost();
+        $containsAppUrl = Str::contains($domain, config('app.url'));
+        if(!$containsAppUrl){
+            // If no link is found, retrieve information from the Setting table with id=1
+            $setting = Setting::findOrFail(1);
+            return redirect()->away($setting->auto_redirect_to);
+        }
         // If a link is found, return the view with the link data
         return view('frontend.auth.login');
     }
