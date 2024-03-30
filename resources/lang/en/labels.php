@@ -109,6 +109,7 @@ return [
                     'roles' => 'Roles',
                     'social' => 'Social',
                     'total' => 'user total|users total',
+                    'group_id' => 'Groups',
                 ],
 
                 'tabs' => [
@@ -242,6 +243,39 @@ return [
                 ],
             ],
 
+            'groups' => [
+                'all' => 'All Groups',
+                'active' => 'URL Group',
+                'create' => 'Create Group',
+                'deactivated' => 'Deactivated Groups',
+                'deleted' => 'Deleted Group',
+                'edit' => 'Edit Group',
+                'management' => 'Groups',
+
+                'table' => [
+                    'created' => 'Created',
+                    'id' => 'ID',
+                    'last_updated' => 'Last Updated',
+                    'name' => 'Name',
+                    'category' => 'Domain',
+                    'published' => 'Publish Date & Time',
+                    'featured_image' => 'Featured Image',
+                    'content' => 'Content',
+                    'tags' => 'Tags',
+                    'meta_title' => 'Meta Title',
+                    'slug' => 'Slug',
+                    'cannonical_link' => 'Cannonical Link',
+                    'meta_keywords' => 'Meta Keywords',
+                    'meta_description' => 'Meta Description',
+                    'status' => 'Status',
+                    'createdby' => 'Created By',
+                    'createdat' => 'Created At',
+                    'total' => 'link total|links total',
+                    'domain' => 'Domains',
+                    'url' => 'URL'
+                ],
+            ],
+
             'settings' => [
                 'all' => 'All Settings',
                 'active' => 'URL List',
@@ -304,7 +338,8 @@ return [
                     'createdat' => 'Created At',
                     'total' => 'redirect link total|redirect links total',
                     'domain' => 'Domains',
-                    'url' => 'URL'
+                    'url' => 'URL',
+                    'group_id' => 'Groups'
                 ],
             ],
 

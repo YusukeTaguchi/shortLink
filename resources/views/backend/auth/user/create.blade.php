@@ -27,6 +27,15 @@
         <div class="row mt-4 mb-4">
             <div class="col">
                 <div class="form-group row">
+                    {{ Form::label('group_id', trans('validation.attributes.backend.access.users.group_id'), ['class' => 'col-md-2 from-control-label required']) }}
+
+                    <div class="col-md-10">
+                        {{ Form::select('group_id', $groups, null, ['class' => 'form-control categories box-size', 'data-placeholder' => trans('validation.attributes.backend.access.users.group_id'), 'required' => 'required']) }}
+                    </div>
+                    <!--col-->
+                </div>
+                
+                <div class="form-group row">
                     {{ Form::label('first_name', __('validation.attributes.backend.access.users.first_name'), [ 'class'=>'col-md-2 form-control-label']) }}
 
                     <div class="col-md-10">

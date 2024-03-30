@@ -1,9 +1,9 @@
 @extends('backend.layouts.app')
 
-@section('title', app_name() . ' | ' . __('labels.backend.access.redirect-links.management'))
+@section('title', app_name() . ' | ' . __('labels.backend.access.groups.management'))
 
 @section('breadcrumb-links')
-@include('backend.redirect-links.includes.breadcrumb-links')
+@include('backend.groups.includes.breadcrumb-links')
 @endsection
 
 @section('content')
@@ -12,7 +12,7 @@
         <div class="row">
             <div class="col-sm-5">
                 <h4 class="card-title mb-0">
-                    {{ __('labels.backend.access.redirect-links.management') }} <small class="text-muted">{{ __('labels.backend.access.redirect-links.active') }}</small>
+                    {{ __('labels.backend.access.groups.management') }} <small class="text-muted">{{ __('labels.backend.access.groups.active') }}</small>
                 </h4>
             </div>
             <!--col-->
@@ -22,14 +22,12 @@
         <div class="row mt-4">
             <div class="col">
                 <div class="table-responsive">
-                    <table id="redirect-links-table" class="table" data-ajax_url="{{ route("admin.redirect-links.get") }}">
+                    <table id="groups-table" class="table" data-ajax_url="{{ route("admin.groups.get") }}">
                         <thead>
                             <tr>
-                                <th>{{ trans('labels.backend.access.redirect-links.table.group_id') }}</th>
-                                <th>{{ trans('labels.backend.access.redirect-links.table.domain') }}</th>
-                                <th>{{ trans('labels.backend.access.redirect-links.table.url') }}</th>
-                                <th>{{ trans('labels.backend.access.redirect-links.table.status') }}</th>
-                                <th>{{ trans('labels.backend.access.redirect-links.table.createdat') }}</th>
+                                <th>{{ trans('labels.backend.access.groups.table.name') }}</th>
+                                <th>{{ trans('labels.backend.access.groups.table.status') }}</th>
+                                <th>{{ trans('labels.backend.access.groups.table.createdat') }}</th>
                                 <th>{{ trans('labels.general.actions') }}</th>
                             </tr>
                         </thead>
@@ -51,7 +49,7 @@
 @section('pagescript')
 <script>
     FTX.Utils.documentReady(function() {
-        FTX.RedirectLinks.list.init();
+        FTX.Groups.list.init();
     });
 </script>
 

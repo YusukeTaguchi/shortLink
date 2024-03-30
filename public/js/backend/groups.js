@@ -1,28 +1,27 @@
 (function () {
 
-    FTX.RedirectLinks = {
+    FTX.Groups = {
 
         list: {
         
             selectors: {
-                redirect_links_table: $('#redirect-links-table'),
+                groups: $('#groups-table'),
             },
         
             init: function () {
 
-                this.selectors.redirect_links_table.dataTable({
+                this.selectors.groups.dataTable({
 
                     processing: false,
                     serverSide: true,
                     ajax: {
-                        url: this.selectors.redirect_links_table.data('ajax_url'),
+                        url: this.selectors.groups.data('ajax_url'),
                         type: 'post',
                     },
                     columns: [
-                        { data: 'name', name: 'name', searchable: false },
-                        { data: 'domain', name: 'domain' },
-                        { data: 'url', name: 'url' },
-                        { data: 'display_status', name: 'status' },
+
+                        { data: 'name', name: 'name' },
+                        { data: 'status', name: 'status' },
                         { data: 'created_at', name: 'created_at' },
                         { data: 'actions', name: 'actions', searchable: false, sortable: false }
 

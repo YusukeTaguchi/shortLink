@@ -11,6 +11,7 @@ use App\Http\Requests\Backend\RedirectLinks\UpdateRedirectLinksRequest;
 use App\Http\Responses\RedirectResponse;
 use App\Http\Responses\ViewResponse;
 use App\Models\RedirectLink;
+use App\Models\Group;
 use App\Repositories\Backend\RedirectLinksRepository;
 use Illuminate\Support\Facades\View;
 
@@ -47,7 +48,8 @@ class RedirectLinksController extends Controller
      */
     public function create(CreateRedirectLinksRequest $request)
     {
-        return new ViewResponse('backend.redirect-links.create');
+        $groups = Group::getSelectData();
+        return new ViewResponse('backend.redirect-links.create',  ['groups' => $groups]);
     }
 
     /**
@@ -70,7 +72,8 @@ class RedirectLinksController extends Controller
      */
     public function edit(RedirectLink $redirectLink, ManageRedirectLinksRequest $request)
     {
-        return new ViewResponse('backend.redirect-links.edit', ['redirectLink' => $redirectLink]);
+        $groups = Group::getSelectData();
+        return new ViewResponse('backend.redirect-links.edit', ['redirectLink' => $redirectLink, 'groups' => $groups]);
     }
 
     /**

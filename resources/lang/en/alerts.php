@@ -68,6 +68,12 @@ return [
             'deleted' => 'The domain was successfully deleted.',
         ],
 
+        'groups' => [
+            'created' => 'The group was successfully created.',
+            'updated' => 'The group was successfully updated.',
+            'deleted' => 'The group was successfully deleted.',
+        ],
+
         'settings' => [
             'created' => 'The setting was successfully created.',
             'updated' => 'The setting was successfully updated.',

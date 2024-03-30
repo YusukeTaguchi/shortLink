@@ -184,6 +184,7 @@ return [
                     'send_confirmation_email' => 'Send Confirmation E-mail',
                     'timezone' => 'Timezone',
                     'language' => 'Language',
+                    'group_id' => 'Groups',
                 ],
 
                 'pages' => [
@@ -253,7 +254,8 @@ return [
                     'thumbnail_image' => 'Thumbnail Image',
                     'notes' => 'Notes',
                     'domains' => 'Domain',
-                    'fake' => "Mode Fake"
+                    'fake' => "Mode Fake",
+                    'group_id' => 'Groups'
 
                 ],
 
@@ -271,11 +273,30 @@ return [
                     'meta_description' => 'Meta Description',
                     'status' => 'Status',
                     'domain' => 'Domains',
-                    'url' => 'URL'
+                    'url' => 'URL',
+                    'group_id' => 'Groups'
                 ],
 
                 'domains' => [
                     'title' => 'Title',
+                    'blog_categories' => 'Domain',
+                    'publish_date_time' => 'Publish Date & Time',
+                    'featured_image' => 'Featured Image',
+                    'content' => 'Content',
+                    'tags' => 'Tags',
+                    'meta_title' => 'Meta Title',
+                    'slug' => 'Blog Slug',
+                    'cannonical_link' => 'Cannonical Link',
+                    'meta_keywords' => 'Meta Keywords',
+                    'meta_description' => 'Meta Description',
+                    'status' => 'Status',
+                    'domain' => 'Domains',
+                    'name' => 'Name',
+                    'url' => 'URL'
+                ],
+
+                'groups' => [
+                    'name' => 'Name',
                     'blog_categories' => 'Domain',
                     'publish_date_time' => 'Publish Date & Time',
                     'featured_image' => 'Featured Image',

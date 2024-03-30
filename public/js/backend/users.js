@@ -30,7 +30,7 @@
                         data: data
                     },
                     columns: [
-
+                        { data: 'group_name', name: 'group_name', searchable: false },
                         { data: 'first_name', name: 'first_name' },
                         { data: 'last_name', name: 'last_name' },
                         { data: 'email', name: 'email' },

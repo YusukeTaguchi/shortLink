@@ -21,6 +21,7 @@ require __DIR__.'/links/link.php';
 require __DIR__.'/settings/setting.php';
 require __DIR__.'/domains/domain.php';
 require __DIR__.'/redirect-links/redirect-link.php';
+require __DIR__.'/groups/group.php';
 require __DIR__.'/blog-categories/blog-categories.php';
 require __DIR__.'/blog-tags/blog-tags.php';
 require __DIR__.'/pages/page.php';

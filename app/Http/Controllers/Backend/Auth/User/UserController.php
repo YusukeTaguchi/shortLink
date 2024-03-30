@@ -12,6 +12,7 @@ use App\Repositories\Backend\Auth\PermissionRepository;
 use App\Repositories\Backend\Auth\RoleRepository;
 use App\Repositories\Backend\Auth\UserRepository;
 use Illuminate\Support\Facades\View;
+use App\Models\Group;
 
 class UserController extends Controller
 {
@@ -52,7 +53,8 @@ class UserController extends Controller
      */
     public function create(ManageUserRequest $request)
     {
-        return view('backend.auth.user.create')
+        $groups = Group::getSelectData();
+        return view('backend.auth.user.create', ['groups' => $groups])
             ->withRoles($this->roleRepository->getAll());
     }
 
@@ -77,7 +79,8 @@ class UserController extends Controller
      */
     public function show(ManageUserRequest $request, User $user)
     {
-        return view('backend.auth.user.show')
+        $groups = Group::getSelectData();
+        return view('backend.auth.user.show', ['groups' => $groups])
             ->withUser($user);
     }
 
@@ -89,7 +92,8 @@ class UserController extends Controller
      */
     public function edit(ManageUserRequest $request, User $user, PermissionRepository $permissionRepository)
     {
-        return view('backend.auth.user.edit')
+        $groups = Group::getSelectData();
+        return view('backend.auth.user.edit', ['groups' => $groups])
             ->withUser($user)
             ->withUserRoles($user->roles->pluck('id')->all())
             ->withRoles($this->roleRepository->getAll())

@@ -43,6 +43,7 @@ class UserRepository extends BaseRepository
          * be able to differentiate what buttons to show for each row.
          */
         $dataTableQuery = $this->query()
+            ->leftJoin('groups', 'groups.id', '=', 'users.group_id')
             ->select([
                 'users.id',
                 'users.first_name',
@@ -53,14 +54,16 @@ class UserRepository extends BaseRepository
                 'users.created_at',
                 'users.updated_at',
                 'users.deleted_at',
-            ]);
+                'groups.name as group_name',
+            ])
+            ;
 
         if ($trashed == 'true') {
             return $dataTableQuery->onlyTrashed();
         }
 
         // active() is a scope on the UserScope trait
-        return $dataTableQuery->active($status);
+        return $dataTableQuery->where('users.status', $status);
     }
 
     /**
@@ -326,6 +329,7 @@ class UserRepository extends BaseRepository
         $user = new $user();
         $user->first_name = $input['first_name'];
         $user->last_name = $input['last_name'];
+        $user->group_id = $input['group_id'];
         $user->email = $input['email'];
         $user->password = bcrypt($input['password']);
         $user->status = isset($input['status']) ? 1 : 0;

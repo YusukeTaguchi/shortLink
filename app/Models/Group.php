@@ -2,13 +2,13 @@
 
 namespace App\Models;
 
-use App\Models\Traits\Attributes\RedirectLinkAttributes;
+use App\Models\Traits\Attributes\GroupAttributes;
 use App\Models\Traits\ModelAttributes;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class RedirectLink extends BaseModel
+class Group extends BaseModel
 {
-    use ModelAttributes, SoftDeletes, RedirectLinkAttributes;
+    use ModelAttributes, SoftDeletes, GroupAttributes;
 
     /**
      * Fillable.
@@ -16,18 +16,15 @@ class RedirectLink extends BaseModel
      * @var array
      */
     protected $fillable = [
-        'domain',
-        'url', 
-        'group_id', 
+        'name',
         'status',
-        'viewed',
         'created_by',
         'updated_by',
     ];
 
     /**
      * Dates.
-     * 
+     *
      * @var array
      */
     protected $dates = [

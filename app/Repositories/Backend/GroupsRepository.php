@@ -2,19 +2,19 @@
 
 namespace App\Repositories\Backend;
 
-use App\Events\Backend\RedirectLinks\RedirectLinkCreated;
-use App\Events\Backend\RedirectLinks\RedirectLinkDeleted;
-use App\Events\Backend\RedirectLinks\RedirectLinkUpdated;
+use App\Events\Backend\Groups\GroupCreated;
+use App\Events\Backend\Groups\GroupDeleted;
+use App\Events\Backend\Groups\GroupUpdated;
 use App\Exceptions\GeneralException;
-use App\Models\RedirectLink;
+use App\Models\Group;
 use App\Repositories\BaseRepository;
 
-class RedirectLinksRepository extends BaseRepository
+class GroupsRepository extends BaseRepository
 {
     /**
      * Associated Repository Model.
      */
-    const MODEL = RedirectLink::class;
+    const MODEL = Group::class;
 
     /**
      * Sortable.
@@ -23,8 +23,7 @@ class RedirectLinksRepository extends BaseRepository
      */
     private $sortable = [
         'id',
-        'domain',
-        'url',
+        'name',
         'status',
         'created_at',
         'updated_at',
@@ -57,16 +56,12 @@ class RedirectLinksRepository extends BaseRepository
     public function getForDataTable()
     {
         return $this->query()
-            ->leftJoin('groups', 'groups.id', '=', 'redirect_links.group_id')
             ->select([
-                'redirect_links.id',
-                'redirect_links.domain',
-                'redirect_links.url',
-                'redirect_links.created_at',
-                'redirect_links.status', 
-                'groups.name', 
-            ])
-            ->groupBy('redirect_links.id', 'redirect_links.domain', 'redirect_links.url', 'redirect_links.created_at', 'redirect_links.status', 'groups.name');
+                'id',
+                'name',
+                'created_at',
+                'status',
+            ]);
     }
 
     /**
@@ -81,48 +76,48 @@ class RedirectLinksRepository extends BaseRepository
         $input['created_by'] = auth()->user()->id;
         $input['status'] = $input['status'] ?? 0;
 
-        if ($redirectLink = RedirectLink::create($input)) {
-            event(new RedirectLinkCreated($redirectLink));
+        if ($group = Group::create($input)) {
+            event(new GroupCreated($group));
 
-            return $redirectLink;
+            return $group;
         }
 
-        throw new GeneralException(__('exceptions.backend.redirect-links.create_error'));
+        throw new GeneralException(__('exceptions.backend.groups.create_error'));
     }
 
     /**
-     * @param \App\Models\RedirectLink $redirectLink
+     * @param \App\Models\Group $group
      * @param array $input
      */
-    public function update(RedirectLink $redirectLink, array $input)
+    public function update(Group $group, array $input)
     {
         $input['updated_by'] = auth()->user()->id;
         $input['status'] = $input['status'] ?? 0;
 
-        if ($redirectLink->update($input)) {
-            event(new RedirectLinkUpdated($redirectLink));
+        if ($group->update($input)) {
+            event(new GroupUpdated($group));
 
-            return $redirectLink->fresh();
+            return $group->fresh();
         }
 
-        throw new GeneralException(__('exceptions.backend.redirect-links.update_error'));
+        throw new GeneralException(__('exceptions.backend.groups.update_error'));
     }
 
     /**
-     * @param \App\Models\RedirectLink $redirectLink
+     * @param \App\Models\Group $group
      *
      * @throws GeneralException
      *
      * @return bool
      */
-    public function delete(RedirectLink $redirectLink)
+    public function delete(Group $group)
     {
-        if ($redirectLink->delete()) {
-            event(new RedirectLinkDeleted($redirectLink));
+        if ($group->delete()) {
+            event(new GroupDeleted($group));
 
             return true;
         }
 
-        throw new GeneralException(__('exceptions.backend.redirect-links.delete_error'));
+        throw new GeneralException(__('exceptions.backend.groups.delete_error'));
     }
 }

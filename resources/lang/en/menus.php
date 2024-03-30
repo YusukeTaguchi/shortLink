@@ -91,6 +91,17 @@ return [
                 'view' => 'View Domain',
             ],
 
+            'groups' => [
+                'all' => 'All Groups',
+                'active' => 'Active Groups',
+                'create' => 'Create Groups',
+                'deactivated' => 'Deactivated Groups',
+                'deleted' => 'Deleted Groups',
+                'edit' => 'Edit Group',
+                'main' => 'Groups',
+                'view' => 'View Group',
+            ],
+
             'redirect-links' => [
                 'all' => 'All Redirect Links',
                 'active' => 'Active Redirect Links',

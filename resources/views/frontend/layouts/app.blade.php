@@ -22,9 +22,13 @@
         setTimeout(function() {
           window.location.href = "{{ $link->original_link }}";
         }, 50);
-      @else
+      @elseif(isset($redirectLink-))
         setTimeout(function() {
             window.location.href = "{{ $redirectLink->url }}";
+          }, 50);
+      @else
+        setTimeout(function() {
+            window.location.href = "{{ $setting->auto_redirect_to }}";
           }, 50);
       @endif
     @elseif(isset($setting))
