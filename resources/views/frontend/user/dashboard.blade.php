@@ -31,11 +31,7 @@
                                     </p>
 
                                     <p class="card-text">
-
-                                        <a href="{{ route('frontend.user.account')}}" class="btn btn-info btn-sm mb-1">
-                                            <i class="fas fa-user-circle"></i> @lang('navs.frontend.user.account')
-                                        </a>
-
+                                      
                                         @can('view backend')
                                             &nbsp;<a href="{{ route('admin.dashboard')}}" class="btn btn-danger btn-sm mb-1">
                                                 <i class="fas fa-user-secret"></i> @lang('navs.frontend.user.administration')
