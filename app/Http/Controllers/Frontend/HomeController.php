@@ -56,7 +56,7 @@ class HomeController extends Controller
     public function home(Request $request)
     {
         $domain = $request->getHost();
-        $containsAppUrl = strpos($domain, config('app.url')) !== false;
+        $containsAppUrl = strpos(config('app.url'), $domain) !== false;
         if(!$containsAppUrl){
             // If no link is found, retrieve information from the Setting table with id=1
             $setting = Setting::findOrFail(1);
