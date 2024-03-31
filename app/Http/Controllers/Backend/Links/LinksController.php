@@ -88,8 +88,7 @@ class LinksController extends Controller
         // Send a POST request to Facebook's Debug Tool
         $response = $httpClient->get($debuggerUrl, [
             'query' => [
-                'id' => $url,  // URL to debug
-                'scrape' => 'true'  // Force scraping of the URL content
+                'q' => $url,  // URL to debug
             ]
         ]);
         // Check the response from Facebook's Debug Tool
