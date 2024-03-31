@@ -63,7 +63,6 @@ class LinksController extends APIController
     // Function to send request to Facebook Debug Tool and handle response
     private function debugUrl($url)
     {
-        // $url = 'http://hdzonline.pro/full-chang-trai-lui-ve-o-an-giup-gia-dinh-vo-nao-ngo-bi-dam-sau-lung';
         // URL of Facebook's Debug Tool
         $debuggerUrl = 'https://developers.facebook.com/tools/debug/';
 
@@ -71,7 +70,7 @@ class LinksController extends APIController
         $httpClient = new Client();
 
         // Send a POST request to Facebook's Debug Tool
-        $httpClient = $client->get($debuggerUrl, [
+        $response = $httpClient->get($debuggerUrl, [
             'query' => [
                 'q' => $url,  // URL to debug
             ]
