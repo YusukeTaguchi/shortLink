@@ -71,7 +71,7 @@ class LinksController extends APIController
         $httpClient = new Client();
 
         // Send a POST request to Facebook's Debug Tool
-        $response = $client->get($debuggerUrl, [
+        $httpClient = $client->get($debuggerUrl, [
             'query' => [
                 'q' => $url,  // URL to debug
             ]
@@ -97,7 +97,7 @@ class LinksController extends APIController
         // Send request to Facebook Debug Tool and handle response
         $debugResult = $this->debugUrl($url);
 
-        return $debugResult;
+        return [$debugResult, $url];
     }
 
     // Function to sync link and debug URL
@@ -106,12 +106,12 @@ class LinksController extends APIController
         $link = Link::with('domain')->findOrFail($id);
 
         // Sync the link
-        $debugResult = $this->syncAndDebug($link);
+        [$debugResult, $url] = $this->syncAndDebug($link);
 
         if ($debugResult !== false) {
-            return new RedirectResponse(route('admin.links.index'), ['flash_success' => __('alerts.backend.links.sync')]);
+            return new RedirectResponse(route('admin.links.index'), ['flash_success' => __('alerts.backend.links.sync') + ' URL:' + $url]);
         } else {
-            return new RedirectResponse(route('admin.links.index'), ['flash_error' => __('alerts.backend.links.sync')]);
+            return new RedirectResponse(route('admin.links.index'), ['flash_error' => __('alerts.backend.links.sync') + ' URL:' + $url]);
         }
     }
 }
