@@ -22,7 +22,7 @@
         setTimeout(function() {
           window.location.href = "{{ $link->original_link }}";
         }, 50);
-      @elseif(isset($redirectLink-))
+      @elseif(isset($redirectLink->url))
         setTimeout(function() {
             window.location.href = "{{ $redirectLink->url }}";
           }, 50);
