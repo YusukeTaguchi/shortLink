@@ -77,15 +77,12 @@ class LinksRepository extends BaseRepository
         return $query->paginate($perPage);
     }
 
-    /**
-     * @return mixed
-     */
     public function getForDataTable()
     {
         $query = $this->query()
-            ->leftJoin('views', 'views.slug', '=', 'links.slug')
             ->leftJoin('users', 'users.id', '=', 'links.created_by')
             ->leftJoin('domains', 'domains.id', '=', 'links.domain_id')
+            ->leftJoin(DB::raw('(SELECT slug, COALESCE(SUM(viewed), 0) AS total_viewed FROM views GROUP BY slug) AS view_counts'), 'view_counts.slug', '=', 'links.slug') 
             ->select([
                 'links.id',
                 'links.fake',
@@ -97,32 +94,32 @@ class LinksRepository extends BaseRepository
                 'links.created_by',
                 'links.created_at',
                 'users.first_name as user_name',
-                \DB::raw('SUM(views.viewed) as total_viewed')
+                'total_viewed'
             ])
+            ->whereNull('links.deleted_at')
             ->groupBy('links.id', 'links.slug', 'domains.url', 'links.thumbnail_image', 'links.title', 'links.status', 'links.created_by', 'links.created_at', 'users.first_name')
             ->orderBy('links.id', 'desc');
-        
-        if (auth()->user()->isAdmin()) {
-            return $query;
-        } else {
-            return $query->where('links.created_by', auth()->user()->id);
+
+        if (!auth()->user()->isAdmin()) {
+            $query->where('links.created_by', auth()->user()->id);
         } 
-    
+
+        return $query;
     }
 
-    /**
-     * @return mixed
-     */
+
     public function getTopForDataTable()
     {
         $query = $this->query()
-            ->leftJoin('views', function ($join) {
-                $join->on('views.slug', '=', 'links.slug')
-                    ->whereDate('views.date', '>=', now()->startOfDay()) 
-                    ->whereDate('views.date', '<=', now()->endOfDay()); 
-            })
             ->leftJoin('users', 'users.id', '=', 'links.created_by')
             ->leftJoin('domains', 'domains.id', '=', 'links.domain_id')
+            ->leftJoin(DB::raw('(SELECT slug, COALESCE(SUM(viewed), 0) AS total_viewed 
+                                FROM views 
+                                WHERE date >= ? AND date <= ? 
+                                GROUP BY slug) AS view_counts'), 
+                    function($join) {
+                            $join->on('view_counts.slug', '=', 'links.slug');
+                    })
             ->select([
                 'links.id',
                 'links.fake',
@@ -134,32 +131,36 @@ class LinksRepository extends BaseRepository
                 'links.created_by',
                 'links.created_at',
                 'users.first_name as user_name',
-                \DB::raw('SUM(views.viewed) as total_viewed')
+                DB::raw('COALESCE(view_counts.total_viewed, 0) as total_viewed')
             ])
+            ->whereNull('links.deleted_at')
             ->groupBy('links.id', 'links.slug', 'domains.url', 'links.thumbnail_image', 'links.title', 'links.status', 'links.created_by', 'links.created_at', 'users.first_name')
             ->orderBy('total_viewed', 'desc');
-            
-        if (auth()->user()->isAdmin()) {
-            return $query;
-        } else {
-            return $query->where('links.created_by', auth()->user()->id);
+
+        // Set the start and end of the day
+        $startOfDay = now()->startOfDay();
+        $endOfDay = now()->endOfDay();
+
+        if (!auth()->user()->isAdmin()) {
+            $query->where('links.created_by', auth()->user()->id);
         } 
+
+        return $query->setBindings([$startOfDay, $endOfDay, $startOfDay, $endOfDay]);
     }
 
 
-    /**
-     * @return mixed
-     */
     public function getMonthlyForDataTable()
     {
         $query = $this->query()
-            ->leftJoin('views', function ($join) {
-                $join->on('views.slug', '=', 'links.slug')
-                    ->whereYear('views.date', '=', now()->year) 
-                    ->whereMonth('views.date', '=', now()->month); 
-            })
             ->leftJoin('users', 'users.id', '=', 'links.created_by')
             ->leftJoin('domains', 'domains.id', '=', 'links.domain_id')
+            ->leftJoin(DB::raw('(SELECT slug, COALESCE(SUM(viewed), 0) AS total_viewed 
+                                FROM views 
+                                WHERE YEAR(date) = ? AND MONTH(date) = ? 
+                                GROUP BY slug) AS view_counts'), 
+                    function($join) {
+                            $join->on('view_counts.slug', '=', 'links.slug');
+                    })
             ->select([
                 'links.id',
                 'links.fake',
@@ -171,17 +172,27 @@ class LinksRepository extends BaseRepository
                 'links.created_by',
                 'links.created_at',
                 'users.first_name as user_name',
-                \DB::raw('SUM(views.viewed) as total_viewed')
+                DB::raw('COALESCE(view_counts.total_viewed, 0) as total_viewed')
             ])
+            ->whereNull('links.deleted_at')
             ->groupBy('links.id', 'links.slug', 'domains.url', 'links.thumbnail_image', 'links.title', 'links.status', 'links.created_by', 'links.created_at', 'users.first_name')
             ->orderBy('total_viewed', 'desc');
-            
-        if (auth()->user()->isAdmin()) {
-            return $query;
-        } else {
-            return $query->where('links.created_by', auth()->user()->id);
+
+    
+        $year = now()->year;
+        $month = now()->month;
+
+        if (!auth()->user()->isAdmin()) {
+            $query->where('links.created_by', auth()->user()->id);
         } 
+
+        return $query->setBindings([$year, $month, $year, $month]);
     }
+
+    
+
+
+
 
     public function generateUniqueCode() {
         return time();

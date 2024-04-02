@@ -32,6 +32,7 @@ class LinksTableController extends Controller
      */
     public function __invoke(ManageLinksRequest $request)
     {
+        
         return Datatables::of($this->repository->getForDataTable())
             ->escapeColumns(['title'])
             ->addColumn('status', function ($links) {

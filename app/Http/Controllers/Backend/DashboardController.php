@@ -61,6 +61,7 @@ class DashboardController extends Controller
             // Lấy dữ liệu từ các truy vấn
             $linkStats = $linkStatsQuery->count();
             $viewStats = $viewStatsQuery->sum('views.viewed');
+            
 
             // Lưu trữ dữ liệu vào mảng $monthlyStats
             $monthlyStats[$month] = [
