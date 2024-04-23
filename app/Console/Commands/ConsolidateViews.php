@@ -27,6 +27,7 @@ class ConsolidateViews extends Command
                     // Lấy tất cả views cho ngày hiện tại
                     $views = DB::table('views')
                         ->whereDate('date', $date)
+                        ->where('is_consolidated', '!=', 1)
                         ->get();
 
                     // Tạo hoặc cập nhật một record cho ngày hiện tại
@@ -45,7 +46,7 @@ class ConsolidateViews extends Command
                     foreach ($consolidatedViews as $slug => $viewed) {
                         DB::table('views')->updateOrInsert(
                             ['slug' => $slug, 'date' => $date],
-                            ['viewed' => DB::raw("viewed + $viewed")]
+                            ['viewed' => DB::raw("viewed + $viewed"), 'is_consolidated' => 1]
                         );
                     }
 
