@@ -15,13 +15,14 @@ class ConsolidateViews extends Command
     {
         $currentDate = Carbon::today();
         $firstDayOfMonth = $currentDate->copy()->subMonth()->startOfMonth();
+        $firstDayOfMonthPre = $currentDate->copy()->subMonths(1)->startOfMonth();
         $lastDayOfMonth = $currentDate->copy()->endOfMonth();
        
 
         DB::beginTransaction();
 
         try {
-            for ($date = $firstDayOfMonth; $date <= $lastDayOfMonth; $date->addDay()) {
+            for ($date = $firstDayOfMonthPre; $date <= $lastDayOfMonth; $date->addDay()) {
                 if (!$date->isSameDay($currentDate)) {
                   
                     // Lấy tất cả views cho ngày hiện tại
