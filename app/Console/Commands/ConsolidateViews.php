@@ -28,7 +28,10 @@ class ConsolidateViews extends Command
                     // Lấy tất cả views cho ngày hiện tại
                     $views = DB::table('views')
                         ->whereDate('date', $date)
-                        ->where('is_consolidated', '!=', 1)
+                        ->where(function ($query) {
+                            $query->where('is_consolidated', '!=', 1)
+                                  ->orWhereNull('is_consolidated');
+                        })
                         ->get();
 
                     print_r("Views: " . $views->count(). "\n");
