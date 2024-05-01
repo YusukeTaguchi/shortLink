@@ -24,12 +24,14 @@ class ConsolidateViews extends Command
         try {
             for ($date = $firstDayOfMonthPre; $date <= $lastDayOfMonth; $date->addDay()) {
                 if (!$date->isSameDay($currentDate)) {
-                  
+                    print_r("Date: '$date'");
                     // Lấy tất cả views cho ngày hiện tại
                     $views = DB::table('views')
                         ->whereDate('date', $date)
                         ->where('is_consolidated', '!=', 1)
                         ->get();
+
+                    print_r("Views: ", $views->count());
 
                     // Tạo hoặc cập nhật một record cho ngày hiện tại
                     $consolidatedViews = [];
@@ -43,6 +45,8 @@ class ConsolidateViews extends Command
                             $consolidatedViews[$slug] += $viewed;
                         }
                     }
+
+                    print_r("ConsolidatedViews: ", count($consolidatedViews));
 
                     foreach ($consolidatedViews as $slug => $viewed) {
                         DB::table('views')->updateOrInsert(
