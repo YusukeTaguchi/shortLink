@@ -222,6 +222,7 @@ class DashboardController extends Controller
             DB::raw('DAY(views_counts_by_day.date) as day'),
             DB::raw('SUM(views_counts_by_day.viewed) as count')
         )
+        ->join('links', 'links.id', '=', 'views_counts_by_day.link_id')
         ->whereYear('date', '=', now()->year)
         ->whereMonth('date', '=', now()->month)
         ->groupBy(DB::raw('DAY(views_counts_by_day.date)'));
