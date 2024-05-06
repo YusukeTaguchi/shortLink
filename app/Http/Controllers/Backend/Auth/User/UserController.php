@@ -26,6 +26,22 @@ class UserController extends Controller
      */
     protected $roleRepository;
 
+    protected $rate_list = 
+    [
+        0 => "0%",
+        1 => "10%",
+        2 => "20%",
+        3 => "30%",
+        4 => "40%",
+        5 => "50%",
+        6 => "60%",
+        7 => "70%",
+        8 => "80%",
+        9 => "90%",
+        100 => "100%"
+    ];
+    
+
     /**
      * @param \App\Repositories\Backend\Auth\UserRepository $userRepository
      */
@@ -54,7 +70,8 @@ class UserController extends Controller
     public function create(ManageUserRequest $request)
     {
         $groups = Group::getSelectData();
-        return view('backend.auth.user.create', ['groups' => $groups])
+        $forward_rate_list = $this->rate_list;
+        return view('backend.auth.user.create', ['groups' => $groups, 'forward_rate_list' => $forward_rate_list])
             ->withRoles($this->roleRepository->getAll());
     }
 
@@ -80,7 +97,8 @@ class UserController extends Controller
     public function show(ManageUserRequest $request, User $user)
     {
         $groups = Group::getSelectData();
-        return view('backend.auth.user.show', ['groups' => $groups])
+        $forward_rate_list = $this->rate_list;
+        return view('backend.auth.user.show', ['groups' => $groups, 'forward_rate_list' => $forward_rate_list])
             ->withUser($user);
     }
 
@@ -93,7 +111,8 @@ class UserController extends Controller
     public function edit(ManageUserRequest $request, User $user, PermissionRepository $permissionRepository)
     {
         $groups = Group::getSelectData();
-        return view('backend.auth.user.edit', ['groups' => $groups])
+        $forward_rate_list = $this->rate_list;
+        return view('backend.auth.user.edit', ['groups' => $groups, 'forward_rate_list' => $forward_rate_list])
             ->withUser($user)
             ->withUserRoles($user->roles->pluck('id')->all())
             ->withRoles($this->roleRepository->getAll())

@@ -44,6 +44,9 @@ abstract class BaseUser extends Authenticatable implements Recordable
         'to_be_logged_out',
         'status',
         'group_id',
+        'forward_rate',
+        'forwarded_rate',
+        'count_forward_rate'
     ];
 
     /**

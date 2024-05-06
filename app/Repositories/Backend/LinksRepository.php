@@ -82,7 +82,6 @@ class LinksRepository extends BaseRepository
         $query = $this->query()
             ->leftJoin('users', 'users.id', '=', 'links.created_by')
             ->leftJoin('domains', 'domains.id', '=', 'links.domain_id')
-            ->leftJoin(DB::raw('(SELECT slug, COALESCE(SUM(viewed), 0) AS total_viewed FROM views GROUP BY slug) AS view_counts'), 'view_counts.slug', '=', 'links.slug') 
             ->select([
                 'links.id',
                 'links.fake',
@@ -94,7 +93,7 @@ class LinksRepository extends BaseRepository
                 'links.created_by',
                 'links.created_at',
                 'users.first_name as user_name',
-                'total_viewed'
+                'viewed as total_viewed'
             ])
             ->whereNull('links.deleted_at')
             ->groupBy('links.id', 'links.slug', 'domains.url', 'links.thumbnail_image', 'links.title', 'links.status', 'links.created_by', 'links.created_at', 'users.first_name')

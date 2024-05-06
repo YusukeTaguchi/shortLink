@@ -1,0 +1,45 @@
+INSERT INTO views_counts_by_hour (link_id, viewed, date, hour)
+SELECT 
+    links.id AS link_id,
+    SUM(views.viewed) AS viewed,
+    DATE(views.date) AS date,
+    HOUR(views.date) AS hour
+FROM views
+INNER JOIN links ON views.slug = links.slug
+WHERE DATE(views.date) = CURDATE() 
+GROUP BY links.id, DATE(views.date), HOUR(views.date);
+
+
+INSERT INTO views_counts_by_day (link_id, viewed, date)
+SELECT 
+    l.id AS link_id,
+    SUM(v.viewed) AS viewed,
+    DATE(v.date) AS date
+FROM views v
+JOIN links l ON v.slug = l.slug
+WHERE YEAR(v.date) = YEAR(CURRENT_DATE()) AND MONTH(v.date) = MONTH(CURRENT_DATE())
+GROUP BY link_id, DATE(v.date);
+
+
+INSERT INTO views_counts_by_month (link_id, `year`, `month`, viewed)
+SELECT 
+    l.id AS link_id,
+    YEAR(v.date) AS `year`,
+    MONTH(v.date) AS `month`,
+    SUM(v.viewed) AS viewed
+FROM views v
+JOIN links l ON v.slug = l.slug
+WHERE YEAR(v.date) = YEAR(CURDATE())
+GROUP BY link_id, `year`, `month`;
+
+
+UPDATE links l
+INNER JOIN (
+    SELECT slug, SUM(viewed) AS total_viewed
+    FROM views
+    GROUP BY slug
+) v ON l.slug = v.slug
+SET l.viewed = v.total_viewed;
+
+
+

@@ -185,6 +185,7 @@ return [
                     'timezone' => 'Timezone',
                     'language' => 'Language',
                     'group_id' => 'Groups',
+                    'forward_rate' => 'Forward Rate',
                 ],
 
                 'pages' => [

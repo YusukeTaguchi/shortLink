@@ -34,8 +34,6 @@ class ConsolidateViews extends Command
                         })
                         ->get();
 
-                    print_r("Views: " . $views->count(). "\n");
-
                     // Tạo hoặc cập nhật một record cho ngày hiện tại
                     $consolidatedViews = [];
                     foreach ($views as $view) {
@@ -49,8 +47,6 @@ class ConsolidateViews extends Command
                         }
                     }
 
-                    print_r("ConsolidatedViews: ". count($consolidatedViews). "\n");
-
                     foreach ($consolidatedViews as $slug => $viewed) {
                         DB::table('views')->updateOrInsert(
                             ['slug' => $slug, 'date' => $date],
@@ -62,6 +58,7 @@ class ConsolidateViews extends Command
                     DB::table('views')
                         ->whereDate('date', $date)
                         ->whereIn('id', $views->pluck('id'))
+                        ->where('is_consolidated', '!=', 1) 
                         ->delete();
                 }
             }

@@ -36,9 +36,15 @@
                         { data: 'email', name: 'email' },
                         { data: 'confirmed', name: 'confirmed' },
                         { data: 'roles', name: 'roles', sortable: false },
+                        { data: 'total_links', name: 'total_links', searchable: false },
+                        { data: 'total_views', name: 'total_views', searchable: false },
+                        { data: 'forward_rate', name: 'forward_rate', searchable: false },
                         { data: 'created_at', name: 'created_at' },
                         { data: 'updated_at', name: 'updated_at' },
                         { data: 'actions', name: 'actions', searchable: false, sortable: false }
+                    ],
+                    columnDefs: [
+                        { targets: [6, 7, 8], className: 'text-right' }
                     ],
                     order: [[0, "asc"]],
                     searchDelay: 500,

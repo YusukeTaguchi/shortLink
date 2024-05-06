@@ -9,6 +9,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\View;
 use App\Models\Link;
 use App\Models\View as Views;
+use App\Models\ViewsCountsByDay;
+use App\Models\ViewsCountsByHour;
 use Carbon\Carbon;
 use DB;
 /**
@@ -27,98 +29,98 @@ class DashboardController extends Controller
      */
     public function index()
     {
-
-        $monthlyStats = [];
         $year = date('Y');
 
-        // Vòng lặp qua từng tháng trong năm (từ tháng 1 đến tháng 12)
-        for ($month = 1; $month <= 12; $month++) {
-            // Truy vấn số liệu thống kê cho link trong tháng này
-            $linkStatsQuery = Link::select(
-                    DB::raw('MONTH(created_at) as month'),
-                    DB::raw('COUNT(*) as count')
-                )
-                ->whereYear('created_at', '=', $year) // $year là năm muốn thống kê
-                ->whereMonth('created_at', '=', $month)
-                ->groupBy(DB::raw('MONTH(created_at)'));
+        $linkStatsQuery = Link::select(
+            DB::raw('MONTH(created_at) as month'),
+            DB::raw('COUNT(*) as count')
+        )
+        ->whereYear('created_at', '=', $year)
+        ->groupBy(DB::raw('MONTH(created_at)'));
 
-            // Truy vấn số liệu thống kê cho lượt xem trong tháng này
-            $viewStatsQuery = Views::select(
-                    DB::raw('MONTH(views.date) as month'),
-                    DB::raw('SUM(views.viewed) as count')
-                )
-                ->leftJoin('links', 'links.slug', '=', 'views.slug')
-                ->whereYear('views.date', '=', $year) // $year là năm muốn thống kê
-                ->whereMonth('views.date', '=', $month)
-                ->groupBy(DB::raw('MONTH(views.date)'));
-
-            // Thêm điều kiện cho người dùng không phải là quản trị viên
-            if (!auth()->user()->isAdmin()) {
-                $linkStatsQuery->where('links.created_by', auth()->user()->id);
-                $viewStatsQuery->where('links.created_by', auth()->user()->id);
-            }
-
-            // Lấy dữ liệu từ các truy vấn
-            $linkStats = $linkStatsQuery->count();
-            $viewStats = $viewStatsQuery->sum('views.viewed');
-            
-
-            // Lưu trữ dữ liệu vào mảng $monthlyStats
-            $monthlyStats[$month] = [
-                'link_stats' => $linkStats,
-                'view_stats' => $viewStats,
-            ];
-            
+        // Thêm điều kiện cho người dùng không phải là quản trị viên
+        if (!auth()->user()->isAdmin()) {
+            $linkStatsQuery->where('created_by', auth()->user()->id);
         }
 
+        // Lấy dữ liệu từ truy vấn
+        $linkStats = $linkStatsQuery->get();
 
-        // Lấy ngày hiện tại
+        // Tạo một mảng để lưu trữ số liệu thống kê cho từng tháng
+        $monthlyStats = [];
+        for ($month = 1; $month <= 12; $month++) {
+            $monthlyStats[$month] = [
+                'link_stats' => 0,
+                'view_stats' => 0,
+            ];
+        }
+
+        foreach ($linkStats as $stats) {
+            $monthlyStats[$stats->month]['link_stats'] += $stats->count;
+        }
+
+        $viewStats = DB::table('views_counts_by_month')
+            ->select('month', DB::raw('SUM(views_counts_by_month.viewed) as count'))
+            ->where('year', '=', $year) 
+            ->groupBy('month');
+
+        if (!auth()->user()->isAdmin()) {
+            $viewStats->join('links', 'views_counts_by_month.link_id', '=', 'links.id')
+                ->where('links.created_by', auth()->user()->id);
+        }
+
+        $viewStats = $viewStats->get();
+
+        foreach ($viewStats as $stats) {
+            $monthlyStats[$stats->month]['view_stats'] = $stats->count;
+        }
+
         $currentDate = Carbon::now()->toDateString();
 
-        // Truy vấn tổng số lượng link của ngày hiện tại
-        $linksToday = DB::table('links')
-            ->whereDate('created_at', $currentDate);
-        
+        $linksToday = DB::table('views_counts_by_day')
+            ->whereDate('date', $currentDate);
+
         if (!auth()->user()->isAdmin()) {
-            $linksToday =$linksToday->where('links.created_by', auth()->user()->id);
+            $linksToday->join('links', 'views_counts_by_day.link_id', '=', 'links.id')
+                ->where('links.created_by', auth()->user()->id);
         }
+
         $linksToday = $linksToday->count();
 
-        // Truy vấn tổng số lượng view của ngày hiện tại
-        $viewsToday = DB::table('views')
-            ->join('links', 'views.slug', '=', 'links.slug') // Join với bảng links
-            ->whereDate('views.date', $currentDate);
-        if (!auth()->user()->isAdmin()) {
-            $viewsToday =$viewsToday->where('links.created_by', auth()->user()->id);
-        }
-        $viewsToday = $viewsToday->sum('views.viewed');
+        $viewsToday = DB::table('views_counts_by_day')
+            ->join('links', 'views_counts_by_day.link_id', '=', 'links.id') 
+            ->whereDate('date', $currentDate);
 
-        // Lấy tháng hiện tại
+        if (!auth()->user()->isAdmin()) {
+            $viewsToday->where('links.created_by', auth()->user()->id);
+        }
+
+        $viewsToday = $viewsToday->sum('views_counts_by_day.viewed');
+
         $currentMonth = Carbon::now()->month;
+        $linksThisMonth = DB::table('views_counts_by_month')
+            ->where('year', '=', $year) 
+            ->where('month', '=', $currentMonth);
 
-        // Truy vấn tổng số lượng link của tháng hiện tại
-        $linksThisMonth = DB::table('links')
-            ->whereMonth('created_at', $currentMonth);
         if (!auth()->user()->isAdmin()) {
-            $linksThisMonth =$linksThisMonth->where('links.created_by', auth()->user()->id);
+            $linksThisMonth->join('links', 'views_counts_by_month.link_id', '=', 'links.id')
+                ->where('links.created_by', auth()->user()->id);
         }
+
         $linksThisMonth = $linksThisMonth->count();
-
-
-        // Truy vấn tổng số lượng view của tháng hiện tại
-        $viewsThisMonth = DB::table('views')
-            ->leftJoin('links', 'views.slug', '=', 'links.slug') // Join với bảng links
-            ->whereMonth('views.date', $currentMonth)
-            ->whereYear('views.date', '=', $year) ;
+        $viewsThisMonth = DB::table('views_counts_by_month')
+            ->join('links', 'views_counts_by_month.link_id', '=', 'links.id') 
+            ->where('year', '=', $year) 
+            ->where('month', '=', $currentMonth);
 
         if (!auth()->user()->isAdmin()) {
-            $viewsThisMonth =$viewsThisMonth->where('links.created_by', auth()->user()->id);
+            $viewsThisMonth->where('links.created_by', auth()->user()->id);
         }
-        $viewsThisMonth = $viewsThisMonth->sum('views.viewed');
+
+        $viewsThisMonth = $viewsThisMonth->sum('views_counts_by_month.viewed');
 
         return view('backend.dashboard',  compact('monthlyStats', 'linksToday', 'viewsToday', 'linksThisMonth', 'viewsThisMonth'));
     }
-
 
      /**
      * @return \Illuminate\View\View
@@ -145,21 +147,18 @@ class DashboardController extends Controller
       
         $linkStatsQuery = $linkStatsQuery->get();
         
-        
-        $viewStatsQuery = Views::select(
-            DB::raw('HOUR(views.date) as hour'),
-            DB::raw('SUM(views.viewed) as count')
+        $viewStatsQuery = ViewsCountsByHour::select(
+            'hour',
+            DB::raw('SUM(views_counts_by_hour.viewed) as count')
         )
-        ->leftJoin('links', 'links.slug', '=', 'views.slug')
-        ->whereDate('views.date', '=', now()->toDateString())
-        ->groupBy(DB::raw('HOUR(views.date)'))
-        ->orderBy(DB::raw('HOUR(views.date)'));
+        ->join('links', 'links.id', '=', 'views_counts_by_hour.link_id')
+        ->whereDate('views_counts_by_hour.date', '=', now()->toDateString())
+        ->groupBy('hour')
+        ->orderBy('hour');
         
         if (!auth()->user()->isAdmin()) {
             $viewStatsQuery->where('links.created_by', auth()->user()->id);
         } 
-
-       
         
         $viewStatsQuery = $viewStatsQuery->get();
         
@@ -173,16 +172,13 @@ class DashboardController extends Controller
             $viewStats[$viewStat->hour]['count'] = $viewStat->count;
         }
         
-        
         $stats = [
             'link_stats' => array_values($linkStats),
             'view_stats' => array_values($viewStats),
         ];
 
-
         return view('backend.dashboard.today',  compact('stats'));
     }
-
 
     /**
      * @return \Illuminate\View\View
@@ -222,14 +218,13 @@ class DashboardController extends Controller
         }
 
         // Truy vấn và đếm số lượng lượt xem cho mỗi ngày trong tháng
-        $viewStatsQuery = Views::select(
-            DB::raw('DAY(views.date) as day'),
-            DB::raw('SUM(views.viewed) as count')
+        $viewStatsQuery = ViewsCountsByDay::select(
+            DB::raw('DAY(views_counts_by_day.date) as day'),
+            DB::raw('SUM(views_counts_by_day.viewed) as count')
         )
-        ->leftJoin('links', 'links.slug', '=', 'views.slug')
-        ->whereYear('views.date', '=', now()->year)
-        ->whereMonth('views.date', '=', now()->month)
-        ->groupBy(DB::raw('DAY(views.date)'));
+        ->whereYear('date', '=', now()->year)
+        ->whereMonth('date', '=', now()->month)
+        ->groupBy(DB::raw('DAY(views_counts_by_day.date)'));
         
         if (!auth()->user()->isAdmin()) {
             $viewStatsQuery->where('links.created_by', auth()->user()->id);

@@ -114,17 +114,7 @@
                 </div>
                 <!--form-group-->
             @endif
-
-            <div class="form-group row">
-                {{ Form::label('keywords', trans('validation.attributes.backend.access.links.keywords'), ['class' => 'col-md-2 from-control-label required']) }}
-
-                <div class="col-md-10">
-                    {{ Form::text('keywords', null, ['class' => 'form-control', 'placeholder' => trans('validation.attributes.backend.access.links.keywords')]) }}
-                </div>
-                <!--col-->
-            </div>
-            <!--form-group-->
-
+            
             <div class="form-group row">
                 {{ Form::label('description', trans('validation.attributes.backend.access.links.description'), ['class' => 'col-md-2 from-control-label required']) }}
 

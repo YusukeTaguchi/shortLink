@@ -42,8 +42,9 @@ class UserRepository extends BaseRepository
          * Note: You must return deleted_at or the User getActionButtonsAttribute won't
          * be able to differentiate what buttons to show for each row.
          */
-        $dataTableQuery = $this->query()
+        $dataTableQuery = $this->query() 
             ->leftJoin('groups', 'groups.id', '=', 'users.group_id')
+            ->leftJoin('links', 'links.created_by', '=', 'users.id')
             ->select([
                 'users.id',
                 'users.first_name',
@@ -52,10 +53,14 @@ class UserRepository extends BaseRepository
                 'users.status',
                 'users.confirmed',
                 'users.created_at',
+                'users.forward_rate',
                 'users.updated_at',
                 'users.deleted_at',
                 'groups.name as group_name',
+                \DB::raw('COUNT(links.id) as total_links'),
+                \DB::raw('SUM(links.viewed) as total_views')
             ])
+            ->groupBy('users.id');
             ;
 
         if ($trashed == 'true') {

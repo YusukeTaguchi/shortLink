@@ -110,6 +110,7 @@ return [
                     'social' => 'Social',
                     'total' => 'user total|users total',
                     'group_id' => 'Groups',
+                    'forward_rate' => 'Forward Rate'
                 ],
 
                 'tabs' => [

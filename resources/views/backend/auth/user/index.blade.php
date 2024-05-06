@@ -31,6 +31,9 @@
                                 <th>@lang('labels.backend.access.users.table.email')</th>
                                 <th>@lang('labels.backend.access.users.table.confirmed')</th>
                                 <th>@lang('labels.backend.access.users.table.roles')</th>
+                                <th>Total Link</th>
+                                <th>Total View</th>
+                                <th>@lang('labels.backend.access.users.table.forward_rate')</th>
                                 <th>@lang('labels.backend.access.users.table.created')</th>
                                 <th>@lang('labels.backend.access.users.table.last_updated')</th>
                                 <th>@lang('labels.general.actions')</th>
