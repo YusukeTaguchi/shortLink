@@ -112,13 +112,7 @@ class LinksRepository extends BaseRepository
         $query = $this->query()
             ->leftJoin('users', 'users.id', '=', 'links.created_by')
             ->leftJoin('domains', 'domains.id', '=', 'links.domain_id')
-            ->leftJoin(DB::raw('(SELECT slug, COALESCE(SUM(viewed), 0) AS total_viewed 
-                                FROM views 
-                                WHERE date >= ? AND date <= ? 
-                                GROUP BY slug) AS view_counts'), 
-                    function($join) {
-                            $join->on('view_counts.slug', '=', 'links.slug');
-                    })
+            ->leftJoin('views_counts_by_day', 'views_counts_by_day.link_id', '=', 'links.id')
             ->select([
                 'links.id',
                 'links.fake',
@@ -130,7 +124,7 @@ class LinksRepository extends BaseRepository
                 'links.created_by',
                 'links.created_at',
                 'users.first_name as user_name',
-                DB::raw('COALESCE(view_counts.total_viewed, 0) as total_viewed')
+                'views_counts_by_day.viewed as total_viewed'
             ])
             ->whereNull('links.deleted_at')
             ->groupBy('links.id', 'links.slug', 'domains.url', 'links.thumbnail_image', 'links.title', 'links.status', 'links.created_by', 'links.created_at', 'users.first_name')
@@ -153,13 +147,7 @@ class LinksRepository extends BaseRepository
         $query = $this->query()
             ->leftJoin('users', 'users.id', '=', 'links.created_by')
             ->leftJoin('domains', 'domains.id', '=', 'links.domain_id')
-            ->leftJoin(DB::raw('(SELECT slug, COALESCE(SUM(viewed), 0) AS total_viewed 
-                                FROM views 
-                                WHERE YEAR(date) = ? AND MONTH(date) = ? 
-                                GROUP BY slug) AS view_counts'), 
-                    function($join) {
-                            $join->on('view_counts.slug', '=', 'links.slug');
-                    })
+            ->leftJoin('views_counts_by_month', 'views_counts_by_month.link_id', '=', 'links.id')
             ->select([
                 'links.id',
                 'links.fake',
@@ -171,7 +159,7 @@ class LinksRepository extends BaseRepository
                 'links.created_by',
                 'links.created_at',
                 'users.first_name as user_name',
-                DB::raw('COALESCE(view_counts.total_viewed, 0) as total_viewed')
+                'views_counts_by_month.viewed as total_viewed'
             ])
             ->whereNull('links.deleted_at')
             ->groupBy('links.id', 'links.slug', 'domains.url', 'links.thumbnail_image', 'links.title', 'links.status', 'links.created_by', 'links.created_at', 'users.first_name')
