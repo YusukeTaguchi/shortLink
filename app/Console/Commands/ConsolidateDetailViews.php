@@ -26,6 +26,18 @@ class ConsolidateDetailViews extends Command
                 ->whereDate('date', '=', Carbon::today())
                 ->delete();
 
+            DB::statement("
+                INSERT INTO views_counts_by_day (link_id, viewed, date)
+                SELECT 
+                    l.id AS link_id,
+                    SUM(v.viewed) AS viewed,
+                    DATE(v.date) AS date
+                FROM views v
+                JOIN links l ON v.slug = l.slug
+                WHERE YEAR(v.date) = YEAR(CURRENT_DATE()) AND MONTH(v.date) = MONTH(CURRENT_DATE()) AND DATE(v.date) = DATE(CURRENT_DATE())
+                GROUP BY link_id, DATE(v.date);
+            ");
+
             $endTime = Carbon::now();
             $this->info('Time taken for section 1: ' . $startTime->floatDiffInSeconds($endTime) . ' seconds');
             $startTime = $endTime;
