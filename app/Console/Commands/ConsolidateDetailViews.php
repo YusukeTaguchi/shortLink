@@ -31,31 +31,32 @@ class ConsolidateDetailViews extends Command
             $startTime = $endTime;
 
             $this->info('Check if a record for the current month already exists in the views_counts_by_month table');
-            // Check if a record for the current month already exists in the views_counts_by_month table
-            $existingRecord = DB::table('views_counts_by_month')
+            DB::table('views_counts_by_month')
                 ->whereYear('year', '=', Carbon::now()->year)
                 ->whereMonth('month', '=', Carbon::now()->month)
-                ->exists();
-
-            // If the record exists, update it; otherwise, insert a new one
-            if ($existingRecord) {
-                DB::table('views_counts_by_month')
-                    ->whereYear('year', '=', Carbon::now()->year)
-                    ->whereMonth('month', '=', Carbon::now()->month)
-                    ->update([
-                        'viewed' => DB::raw('(SELECT SUM(views.viewed) FROM views WHERE YEAR(views.date) = YEAR(CURRENT_DATE()) AND MONTH(views.date) = MONTH(CURRENT_DATE()))')
-                    ]);
-            } else {
-                DB::table('views_counts_by_month')->insert([
-                    'link_id' => DB::raw('(SELECT links.id FROM views JOIN links ON views.slug = links.slug GROUP BY links.id LIMIT 1)'),
-                    'year' => Carbon::now()->year,
-                    'month' => Carbon::now()->month,
-                    'viewed' => DB::raw('(SELECT SUM(views.viewed) FROM views WHERE YEAR(views.date) = YEAR(CURRENT_DATE()) AND MONTH(views.date) = MONTH(CURRENT_DATE()))')
-                ]);
-            }
-
+                ->delete();
+            
             $endTime = Carbon::now();
             $this->info('Time taken for section 2: ' . $startTime->floatDiffInSeconds($endTime) . ' seconds');
+            $startTime = $endTime;
+
+            // If the record exists, update it; otherwise, insert a new one
+            DB::statement("
+                INSERT INTO views_counts_by_month (link_id, `year`, `month`, viewed)
+                SELECT 
+                    l.id AS link_id,
+                    YEAR(v.date) AS `year`,
+                    MONTH(v.date) AS `month`,
+                    SUM(v.viewed) AS viewed
+                FROM views v
+                JOIN links l ON v.slug = l.slug
+                WHERE YEAR(v.date) = YEAR(CURDATE()) AND MONTH(v.date) = MONTH(CURRENT_DATE())
+                GROUP BY link_id, `year`, `month`
+            ");
+            
+
+            $endTime = Carbon::now();
+            $this->info('Time taken for section 3: ' . $startTime->floatDiffInSeconds($endTime) . ' seconds');
             $startTime = $endTime;
 
             $this->info('Insert data into the views_counts_by_hour table');
@@ -69,11 +70,11 @@ class ConsolidateDetailViews extends Command
                 ])->from('views')
                 ->join('links', 'views.slug', '=', 'links.slug')
                 ->whereDate('views.date', '=', Carbon::today())
-                ->groupBy('links.id', 'date', 'hour');
+                ->groupBy('links.id', 'hour');
             });
 
             $endTime = Carbon::now();
-            $this->info('Time taken for section 3: ' . $startTime->floatDiffInSeconds($endTime) . ' seconds');
+            $this->info('Time taken for section 4: ' . $startTime->floatDiffInSeconds($endTime) . ' seconds');
             $startTime = $endTime;
 
             $this->info('Select view counts grouped by slug for today');

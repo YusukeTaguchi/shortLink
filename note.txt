@@ -43,3 +43,79 @@ SET l.viewed = v.total_viewed;
 
 
 
+
+
+CREATE TABLE `views_counts_by_day` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `link_id` int(10) unsigned NOT NULL,
+  `viewed` int(11) NOT NULL DEFAULT '0',
+  `date` date NOT NULL,
+  PRIMARY KEY (`id`) USING BTREE,
+  KEY `idx_views_counts_by_day_link_id` (`link_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
+
+
+
+CREATE TABLE `views_counts_by_hour` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `link_id` int(10) unsigned NOT NULL,
+  `viewed` int(11) NOT NULL DEFAULT '0',
+  `date` date NOT NULL,
+  `hour` int(10) unsigned NOT NULL,
+  PRIMARY KEY (`id`) USING BTREE,
+  KEY `idx_views_counts_by_hour_link_id` (`link_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
+
+
+
+CREATE TABLE `views_counts_by_month` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `link_id` int(10) unsigned NOT NULL,
+  `year` int(10) unsigned NOT NULL,
+  `month` int(10) unsigned NOT NULL,
+  `viewed` int(11) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`) USING BTREE,
+  KEY `idx_views_counts_by_month_link_id` (`link_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
+
+
+
+CREATE TABLE `users` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `uuid` char(36) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `first_name` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `last_name` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `email` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `avatar_type` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'gravatar',
+  `avatar_location` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `password` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `password_changed_at` timestamp NULL DEFAULT NULL,
+  `active` tinyint(3) unsigned NOT NULL DEFAULT '1',
+  `confirmation_code` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `confirmed` tinyint(1) NOT NULL DEFAULT '0',
+  `timezone` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `last_login_at` timestamp NULL DEFAULT NULL,
+  `last_login_ip` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `to_be_logged_out` tinyint(1) NOT NULL DEFAULT '0',
+  `status` tinyint(1) NOT NULL DEFAULT '1',
+  `created_by` int(10) unsigned DEFAULT NULL,
+  `updated_by` int(10) unsigned DEFAULT NULL,
+  `is_term_accept` tinyint(1) NOT NULL DEFAULT '0' COMMENT ' 0 = not accepted,1 = accepted',
+  `remember_token` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  `group_id` bigint(20) unsigned DEFAULT NULL,
+  `forward_rate` bigint(20) DEFAULT NULL,
+  `forwarded_rate` bigint(20) DEFAULT NULL,
+  `count_forward_rate` bigint(20) DEFAULT NULL,
+  PRIMARY KEY (`id`) USING BTREE,
+  UNIQUE KEY `users_email_unique` (`email`) USING BTREE
+) ENGINE=InnoDB AUTO_INCREMENT=33 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
+
+
+
+ALTER TABLE `laravel`.`users` 
+ADD COLUMN `forward_rate` bigint NULL AFTER `group_id`,
+ADD COLUMN `forwarded_rate` bigint NULL AFTER `forward_rate`,
+ADD COLUMN `count_forward_rate` bigint NULL AFTER `forwarded_rate`
