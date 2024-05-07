@@ -57,7 +57,6 @@ class ConsolidateViews extends Command
                     // Xóa các records views cũ
                     DB::table('views')
                         ->whereDate('date', $date)
-                        ->whereIn('id', $views->pluck('id'))
                         ->whereNull('is_consolidated') 
                         ->delete();
                 }
