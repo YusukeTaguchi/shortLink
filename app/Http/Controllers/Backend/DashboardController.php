@@ -139,43 +139,48 @@ class DashboardController extends Controller
         ->whereDate('created_at', '=', now()->toDateString())
         ->groupBy(DB::raw('HOUR(created_at)'))
         ->orderBy(DB::raw('HOUR(created_at)'));
-       
-        
+
+
         if (!auth()->user()->isAdmin()) {
             $linkStatsQuery->where('links.created_by', auth()->user()->id);
         } 
-      
+
         $linkStatsQuery = $linkStatsQuery->get();
-        
-        $viewStatsQuery = ViewsCountsByHour::select(
-            'hour',
-            DB::raw('SUM(views_counts_by_hour.viewed) as count')
+
+
+        $viewStatsQuery = Views::select(
+            DB::raw('HOUR(views.date) as hour'),
+            DB::raw('SUM(views.viewed) as count')
         )
-        ->join('links', 'links.id', '=', 'views_counts_by_hour.link_id')
-        ->whereDate('views_counts_by_hour.date', '=', now()->toDateString())
-        ->groupBy('hour')
-        ->orderBy('hour');
-        
+        ->leftJoin('links', 'links.slug', '=', 'views.slug')
+        ->whereDate('views.date', '=', now()->toDateString())
+        ->groupBy(DB::raw('HOUR(views.date)'))
+        ->orderBy(DB::raw('HOUR(views.date)'));
+
         if (!auth()->user()->isAdmin()) {
             $viewStatsQuery->where('links.created_by', auth()->user()->id);
         } 
-        
+
+
+
         $viewStatsQuery = $viewStatsQuery->get();
-        
+
         foreach ($linkStatsQuery as $linkStat) {
             $linkStats[$linkStat->hour]['hour'] = $linkStat->hour;
             $linkStats[$linkStat->hour]['count'] = $linkStat->count;
         }
-        
+
         foreach ($viewStatsQuery as $viewStat) {
             $viewStats[$viewStat->hour]['hour'] = $viewStat->hour;
             $viewStats[$viewStat->hour]['count'] = $viewStat->count;
         }
-        
+
+
         $stats = [
             'link_stats' => array_values($linkStats),
             'view_stats' => array_values($viewStats),
         ];
+
 
         return view('backend.dashboard.today',  compact('stats'));
     }

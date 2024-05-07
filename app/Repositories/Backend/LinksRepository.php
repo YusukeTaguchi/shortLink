@@ -82,6 +82,7 @@ class LinksRepository extends BaseRepository
         $query = $this->query()
             ->leftJoin('users', 'users.id', '=', 'links.created_by')
             ->leftJoin('domains', 'domains.id', '=', 'links.domain_id')
+            ->leftJoin(DB::raw('(SELECT slug, COALESCE(SUM(viewed), 0) AS total_viewed FROM views GROUP BY slug) AS view_counts'), 'view_counts.slug', '=', 'links.slug') 
             ->select([
                 'links.id',
                 'links.fake',
@@ -93,7 +94,7 @@ class LinksRepository extends BaseRepository
                 'links.created_by',
                 'links.created_at',
                 'users.first_name as user_name',
-                'viewed as total_viewed'
+                'total_viewed'
             ])
             ->whereNull('links.deleted_at')
             ->groupBy('links.id', 'links.slug', 'domains.url', 'links.thumbnail_image', 'links.title', 'links.status', 'links.created_by', 'links.created_at', 'users.first_name')
@@ -109,10 +110,18 @@ class LinksRepository extends BaseRepository
 
     public function getTopForDataTable()
     {
+        $toDay = now()->toDateString();
+
         $query = $this->query()
             ->leftJoin('users', 'users.id', '=', 'links.created_by')
             ->leftJoin('domains', 'domains.id', '=', 'links.domain_id')
-            ->leftJoin('views_counts_by_day', 'views_counts_by_day.link_id', '=', 'links.id')
+            ->leftJoin(DB::raw('(SELECT slug, COALESCE(SUM(viewed), 0) AS total_viewed 
+                        FROM views 
+                        WHERE date >= ? AND date <= ? 
+                        GROUP BY slug) AS view_counts'), 
+            function($join) {
+                    $join->on('view_counts.slug', '=', 'links.slug');
+            })
             ->select([
                 'links.id',
                 'links.fake',
@@ -124,30 +133,37 @@ class LinksRepository extends BaseRepository
                 'links.created_by',
                 'links.created_at',
                 'users.first_name as user_name',
-                'views_counts_by_day.viewed as total_viewed'
+                DB::raw('COALESCE(view_counts.total_viewed, 0) as total_viewed')
             ])
             ->whereNull('links.deleted_at')
             ->groupBy('links.id', 'links.slug', 'domains.url', 'links.thumbnail_image', 'links.title', 'links.status', 'links.created_by', 'links.created_at', 'users.first_name')
             ->orderBy('total_viewed', 'desc');
-
-        // Set the start and end of the day
-        $startOfDay = now()->startOfDay();
-        $endOfDay = now()->endOfDay();
-
+    
         if (!auth()->user()->isAdmin()) {
+          
             $query->where('links.created_by', auth()->user()->id);
         } 
 
-        return $query->setBindings([$startOfDay, $endOfDay, $startOfDay, $endOfDay]);
+        $startOfDay = now()->startOfDay();
+        $endOfDay = now()->endOfDay();
+    
+        return $query->setBindings([$startOfDay, $endOfDay, auth()->user()->id]);
     }
 
 
     public function getMonthlyForDataTable()
     {
+        $year = now()->year;
+        $month = now()->month;
+
         $query = $this->query()
             ->leftJoin('users', 'users.id', '=', 'links.created_by')
             ->leftJoin('domains', 'domains.id', '=', 'links.domain_id')
-            ->leftJoin('views_counts_by_month', 'views_counts_by_month.link_id', '=', 'links.id')
+             ->leftJoin('views_counts_by_month', function ($join) use($month, $year) {
+                $join->on('views_counts_by_month.link_id', '=', 'links.id')
+                    ->whereDate('views_counts_by_month.month', '=', $month)
+                    ->whereDate('views_counts_by_month.year', '=', $year); 
+            })
             ->select([
                 'links.id',
                 'links.fake',
@@ -165,22 +181,14 @@ class LinksRepository extends BaseRepository
             ->groupBy('links.id', 'links.slug', 'domains.url', 'links.thumbnail_image', 'links.title', 'links.status', 'links.created_by', 'links.created_at', 'users.first_name')
             ->orderBy('total_viewed', 'desc');
 
-    
-        $year = now()->year;
-        $month = now()->month;
-
         if (!auth()->user()->isAdmin()) {
             $query->where('links.created_by', auth()->user()->id);
         } 
 
-        return $query->setBindings([$year, $month, $year, $month]);
+        return $query->setBindings([$year, $month, auth()->user()->id]);
     }
 
     
-
-
-
-
     public function generateUniqueCode() {
         return time();
     }
