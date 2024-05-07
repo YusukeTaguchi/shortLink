@@ -58,7 +58,7 @@ class ConsolidateViews extends Command
                     DB::table('views')
                         ->whereDate('date', $date)
                         ->whereIn('id', $views->pluck('id'))
-                        ->where('is_consolidated', '!=', 1) 
+                        ->whereNull('is_consolidated') 
                         ->delete();
                 }
             }
