@@ -38,7 +38,7 @@
                     {{ Form::label('forward_rate', trans('validation.attributes.backend.access.users.forward_rate'), ['class' => 'col-md-2 from-control-label required']) }}
 
                     <div class="col-md-10">
-                        {{ Form::select('forward_rate', $forward_rate_list, null, ['class' => 'form-control categories box-size', 'data-placeholder' => trans('validation.attributes.backend.access.users.forward_rate'), 'required' => 'required']) }}
+                        {{ Form::text('forward_rate', null, ['class' => 'form-control', 'placeholder' => trans('validation.attributes.backend.access.users.forward_rate'), 'required' => 'required']) }}
                     </div>
                     <!--col-->
                 </div>

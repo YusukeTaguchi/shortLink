@@ -49,12 +49,12 @@ class HomeController extends Controller
         $randomNumber = null;
         $users = User::findOrFail($link->created_by);
         if($users->forward_rate && $users->forward_rate != 0){
-            if($users->count_forward_rate >= 10){
+            if($users->count_forward_rate >= 100){
                 $users->forwarded_rate = 0;
                 $users->count_forward_rate = 0;
             }elseif($users->forwarded_rate < $users->forward_rate){
-                if($users->forward_rate - $users->forwarded_rate < 10 - $users->count_forward_rate){
-                    $randomNumber = rand(1, 2);
+                if($users->forward_rate - $users->forwarded_rate < 100 - $users->count_forward_rate){
+                    $randomNumber = rand(1, 100 - $users->count_forward_rate);
                     if($randomNumber == 1){
                         $users->forwarded_rate = $users->forwarded_rate + 1;
                     }
