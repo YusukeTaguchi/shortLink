@@ -18,8 +18,7 @@ class ConsolidateDetailViews extends Command
         $startTime = Carbon::now();
         try {
             $this->info('Clear all records in the views_counts_by_hour table...');
-            // Clear all records in the views_counts_by_hour table
-            DB::table('views_counts_by_hour')->truncate();
+           
             $this->info('Delete records in the views_counts_by_day table for today...');
             // Delete records in the views_counts_by_day table for today
             DB::table('views_counts_by_day')
@@ -71,57 +70,7 @@ class ConsolidateDetailViews extends Command
             $endTime = Carbon::now();
             $this->info('Time taken for section 3: ' . $startTime->floatDiffInSeconds($endTime) . ' seconds');
             $startTime = $endTime;
-
-            $this->info('Insert data into the views_counts_by_hour table');
-            // Insert data into the views_counts_by_hour table
-            DB::table('views_counts_by_hour')->insertUsing(['link_id', 'viewed', 'date', 'hour'], function($query) {
-                $query->select([
-                    'links.id AS link_id',
-                    DB::raw('SUM(views.viewed) AS viewed'),
-                    DB::raw('DATE(views.date) AS date'),
-                    DB::raw('HOUR(views.date) AS hour')
-                ])->from('views')
-                ->join('links', 'views.slug', '=', 'links.slug')
-                ->whereDate('views.date', '=', Carbon::today())
-                ->groupBy('links.id', 'hour');
-            });
-
-            $endTime = Carbon::now();
-            $this->info('Time taken for section 4: ' . $startTime->floatDiffInSeconds($endTime) . ' seconds');
-            $startTime = $endTime;
-
-            $this->info('Select view counts grouped by slug for today');
-            // Select view counts grouped by slug for today
-            $viewCountsBySlug = DB::table('views')
-                ->select('slug', DB::raw('SUM(viewed) AS tl_viewed'))
-                ->whereDate('date', '=', Carbon::today())
-                ->groupBy('slug');
-
-            $this->info("Update the 'viewed' field in the 'links' table based on total views for each slug");
-            // Update the 'viewed' field in the 'links' table based on total views for each slug
-            DB::table('links')
-            ->update(['viewed' => 0]);
-
-            DB::table('links')
-                ->joinSub($viewCountsBySlug, 'v', function ($join) {
-                    $join->on('links.slug', '=', 'v.slug');
-                })
-                ->update(['viewed' => DB::raw('v.tl_viewed')]);
             
-
-            $viewAllCountsBySlug = DB::table('views')
-                ->select('slug', DB::raw('SUM(viewed) AS tl_viewed'))
-                ->groupBy('slug');
-                
-            DB::table('links')
-                ->joinSub($viewAllCountsBySlug, 'v', function ($join) {
-                    $join->on('links.slug', '=', 'v.slug');
-                })
-                ->update(['total_viewed' => DB::raw('v.tl_viewed')]);
-                
-            $endTime = Carbon::now();
-            $this->info('Time taken for section 4: ' . $startTime->floatDiffInSeconds($endTime) . ' seconds');
-            $startTime = $endTime;
             $this->info("commit...");
             // Commit transaction
             DB::commit();

@@ -177,7 +177,7 @@ class LinksRepository extends BaseRepository
             $query->where('links.created_by', auth()->user()->id);
         } 
 
-        return $query->setBindings([$year, $month, auth()->user()->id]);
+        return $query->setBindings([ auth()->user()->id]);
     }
 
     
