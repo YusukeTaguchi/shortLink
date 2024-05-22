@@ -30,8 +30,8 @@
                         data: data, 
                         dataSrc: function (json) {
                             json.data.forEach(function (row) {
-                                row.total = (row.total_views && row.total_links) ? `${row.total_links} / ${row.total_views}` : "0/0";
-                                row.total_day = (row.total_day_views && row.total_day_links) ? `${row.total_day_links} / ${row.total_day_views} )` : "0/0";
+                                row.total = (row.total_views && row.total_links) ? `${row.total_links} / ${row.total_views}` : "0 / 0";
+                                row.total_day = (row.total_day_views && row.total_day_links) ? `${row.total_day_links} / ${row.total_day_views} ` : "0 / 0";
                             });
                             return json.data;
                         }
