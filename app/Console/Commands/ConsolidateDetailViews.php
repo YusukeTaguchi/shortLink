@@ -25,7 +25,7 @@ class ConsolidateDetailViews extends Command
             DB::table('views_counts_by_day')
                 ->whereDate('date', '=', Carbon::today())
                 ->delete();
-
+                
             DB::statement("
                 INSERT INTO views_counts_by_day (link_id, viewed, date)
                 SELECT 
@@ -43,9 +43,10 @@ class ConsolidateDetailViews extends Command
             $startTime = $endTime;
 
             $this->info('Check if a record for the current month already exists in the views_counts_by_month table');
+
             DB::table('views_counts_by_month')
-                ->whereYear('year', '=', Carbon::now()->year)
-                ->whereMonth('month', '=', Carbon::now()->month)
+                ->where('year', '=', Carbon::now()->year)
+                ->where('month', '=', Carbon::now()->month)
                 ->delete();
             
             $endTime = Carbon::now();
