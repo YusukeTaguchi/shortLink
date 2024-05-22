@@ -139,7 +139,7 @@ class LinksRepository extends BaseRepository
         $startOfDay = now()->startOfDay();
         $endOfDay = now()->endOfDay();
     
-        return $query->setBindings([$startOfDay, $endOfDay, auth()->user()->id]);
+        return $query->setBindings([auth()->user()->id]);
     }
 
 

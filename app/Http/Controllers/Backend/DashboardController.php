@@ -147,21 +147,18 @@ class DashboardController extends Controller
 
         $linkStatsQuery = $linkStatsQuery->get();
 
-
-        $viewStatsQuery = Views::select(
-            DB::raw('HOUR(views.date) as hour'),
-            DB::raw('SUM(views.viewed) as count')
+        $viewStatsQuery = ViewsCountsByHour::select(
+            'hour',
+            DB::raw('SUM(views_counts_by_hour.viewed) as count')
         )
-        ->leftJoin('links', 'links.slug', '=', 'views.slug')
-        ->whereDate('views.date', '=', now()->toDateString())
-        ->groupBy(DB::raw('HOUR(views.date)'))
-        ->orderBy(DB::raw('HOUR(views.date)'));
+        ->join('links', 'links.id', '=', 'views_counts_by_hour.link_id')
+        ->whereDate('views_counts_by_hour.date', '=', now()->toDateString())
+        ->groupBy('hour')
+        ->orderBy('hour');
 
         if (!auth()->user()->isAdmin()) {
             $viewStatsQuery->where('links.created_by', auth()->user()->id);
         } 
-
-
 
         $viewStatsQuery = $viewStatsQuery->get();
 

@@ -62,7 +62,7 @@ class UserRepository extends BaseRepository
                 \DB::raw('COUNT(links.id) as total_links'),
                 \DB::raw('SUM(links.total_viewed) as total_views'),
                 \DB::raw('COUNT(CASE WHEN DATE(links.created_at) = "' . $currentDate . '" THEN links.id END) as total_day_links'),
-                \DB::raw('SUM(CASE WHEN DATE(links.created_at) = "' . $currentDate . '" THEN links.viewed END) as total_day_views')
+                \DB::raw('SUM(links.viewed) as total_day_views')
             ])
             ->groupBy('users.id');
             ;
