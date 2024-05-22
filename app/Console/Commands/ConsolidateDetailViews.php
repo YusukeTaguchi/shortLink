@@ -100,6 +100,9 @@ class ConsolidateDetailViews extends Command
             $this->info("Update the 'viewed' field in the 'links' table based on total views for each slug");
             // Update the 'viewed' field in the 'links' table based on total views for each slug
             DB::table('links')
+            ->update(['viewed' => 0]);
+
+            DB::table('links')
                 ->joinSub($viewCountsBySlug, 'v', function ($join) {
                     $join->on('links.slug', '=', 'v.slug');
                 })
