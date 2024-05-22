@@ -27,7 +27,14 @@
                     ajax: {
                         url: this.selectors.users_table.data('ajax_url'),
                         type: 'post',
-                        data: data
+                        data: data, 
+                        dataSrc: function (json) {
+                            json.data.forEach(function (row) {
+                                row.total = (row.total_views && row.total_links) ? `${row.total_links} / ${row.total_views}` : "0/0";
+                                row.total_day = (row.total_day_views && row.total_day_links) ? `${row.total_day_links} / ${row.total_day_views} )` : "0/0";
+                            });
+                            return json.data;
+                        }
                     },
                     columns: [
                         { data: 'group_name', name: 'group_name', searchable: false },
@@ -36,8 +43,8 @@
                         { data: 'email', name: 'email' },
                         { data: 'confirmed', name: 'confirmed' },
                         { data: 'roles', name: 'roles', sortable: false },
-                        { data: 'total_links', name: 'total_links', searchable: false },
-                        { data: 'total_views', name: 'total_views', searchable: false },
+                        { data: 'total_day', name: 'total_day', searchable: false },
+                        { data: 'total', name: 'total', searchable: false },
                         { data: 'forward_rate', name: 'forward_rate', searchable: false },
                         { data: 'created_at', name: 'created_at' },
                         { data: 'updated_at', name: 'updated_at' },

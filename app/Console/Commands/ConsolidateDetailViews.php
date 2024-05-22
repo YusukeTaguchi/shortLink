@@ -93,7 +93,7 @@ class ConsolidateDetailViews extends Command
             $this->info('Select view counts grouped by slug for today');
             // Select view counts grouped by slug for today
             $viewCountsBySlug = DB::table('views')
-                ->select('slug', DB::raw('SUM(viewed) AS total_viewed'))
+                ->select('slug', DB::raw('SUM(viewed) AS tl_viewed'))
                 ->whereDate('date', '=', Carbon::today())
                 ->groupBy('slug');
 
@@ -103,7 +103,18 @@ class ConsolidateDetailViews extends Command
                 ->joinSub($viewCountsBySlug, 'v', function ($join) {
                     $join->on('links.slug', '=', 'v.slug');
                 })
-                ->update(['viewed' => DB::raw('v.total_viewed')]);
+                ->update(['viewed' => DB::raw('v.tl_viewed')]);
+            
+
+            $viewAllCountsBySlug = DB::table('views')
+                ->select('slug', DB::raw('SUM(viewed) AS tl_viewed'))
+                ->groupBy('slug');
+                
+            DB::table('links')
+                ->joinSub($viewAllCountsBySlug, 'v', function ($join) {
+                    $join->on('links.slug', '=', 'v.slug');
+                })
+                ->update(['total_viewed' => DB::raw('v.tl_viewed')]);
                 
             $endTime = Carbon::now();
             $this->info('Time taken for section 4: ' . $startTime->floatDiffInSeconds($endTime) . ' seconds');

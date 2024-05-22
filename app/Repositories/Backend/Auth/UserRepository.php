@@ -19,6 +19,7 @@ use App\Notifications\Frontend\Auth\UserNeedsConfirmation;
 use App\Repositories\BaseRepository;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\DB;
+use Carbon\Carbon;
 
 /**
  * Class UserRepository.
@@ -42,6 +43,7 @@ class UserRepository extends BaseRepository
          * Note: You must return deleted_at or the User getActionButtonsAttribute won't
          * be able to differentiate what buttons to show for each row.
          */
+        $currentDate = Carbon::now()->toDateString();
         $dataTableQuery = $this->query() 
             ->leftJoin('groups', 'groups.id', '=', 'users.group_id')
             ->leftJoin('links', 'links.created_by', '=', 'users.id')
@@ -58,7 +60,9 @@ class UserRepository extends BaseRepository
                 'users.deleted_at',
                 'groups.name as group_name',
                 \DB::raw('COUNT(links.id) as total_links'),
-                \DB::raw('SUM(links.viewed) as total_views')
+                \DB::raw('SUM(links.total_viewed) as total_views'),
+                \DB::raw('COUNT(CASE WHEN DATE(links.created_at) = "' . $currentDate . '" THEN links.id END) as total_day_links'),
+                \DB::raw('SUM(CASE WHEN DATE(links.created_at) = "' . $currentDate . '" THEN links.viewed END) as total_day_views')
             ])
             ->groupBy('users.id');
             ;
